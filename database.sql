@@ -1,4 +1,8 @@
-#may need to comment out drop if database doesnt exist.
+# You will need a mysql server installed to run this.
+# I am using Xampp to run my mysql server
+# I am running this via mysql workbench, but copy-pasting this to terminal should work too.
+
+# Will need to comment out drop if database doesnt exist.
 DROP DATABASE PHP_SRePS;
 
 CREATE DATABASE PHP_SRePS;
