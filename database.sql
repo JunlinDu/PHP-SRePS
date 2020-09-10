@@ -1,4 +1,6 @@
+#may need to comment out drop if database doesnt exist.
 DROP DATABASE PHP_SRePS;
+
 CREATE DATABASE PHP_SRePS;
 USE PHP_SRePS;
 
