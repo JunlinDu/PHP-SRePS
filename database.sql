@@ -40,16 +40,15 @@ CREATE TABLE product (
 	product_name VARCHAR(50) NOT NULL,
     manufacturer_id INT NOT NULL,
     price DECIMAL(6,2),
-    quantity INT,
 	PRIMARY KEY (product_id),
     FOREIGN KEY (manufacturer_id) REFERENCES manufacturer(manufacturer_id)
 );
 
-INSERT INTO product (`product_name`, `manufacturer_id`, `price`, `quantity`) VALUES ('Panadol - 25 pill box', '1', '5.60', '199');
-INSERT INTO product (`product_name`, `manufacturer_id`, `price`, `quantity`) VALUES ('Meat - unknown origin, 200g', '2', '15.20', '3');
-INSERT INTO product (`product_name`, `manufacturer_id`, `price`, `quantity`) VALUES ('Liquid - heavy, 100ml cups', '3', '2020.05', '9992');
+INSERT INTO product (`product_name`, `manufacturer_id`, `price`, `quantity`) VALUES ('Panadol - 25 pill box', '1', '5.60');
+INSERT INTO product (`product_name`, `manufacturer_id`, `price`, `quantity`) VALUES ('Meat - unknown origin, 200g', '2', '15.20');
+INSERT INTO product (`product_name`, `manufacturer_id`, `price`, `quantity`) VALUES ('Liquid - heavy, 100ml cups', '3', '2020.05');
 INSERT INTO product (`product_name`, `manufacturer_id`, `price`) VALUES ('Pain - heavy, 1 serving', '4', '0.01');
-INSERT INTO product (`product_name`, `manufacturer_id`, `quantity`) VALUES ('Guck - 1 handful', '5', '40');
+INSERT INTO product (`product_name`, `manufacturer_id`, `quantity`) VALUES ('Guck - 1 handful', '5');
 
 CREATE TABLE batch (
 	batch_id INT AUTO_INCREMENT UNIQUE NOT NULL,
@@ -66,6 +65,26 @@ INSERT INTO batch (`product_id`, `exp_date`, `import_date`, `quantity`) VALUES (
 INSERT INTO batch (`product_id`, `import_date`, `quantity`) VALUES ('3', '2020-01-01', '10000');
 INSERT INTO batch (`product_id`) VALUES ('4');
 INSERT INTO batch (`product_id`, `exp_date`, `quantity`) VALUES ('5', '0000-01-01', '50');
+
+
+--------------------------------------------------------------------------------------------------------------
+CREATE TABLE inventory (
+    inven_id INT AUTO_INCREMENT UNIQUE NOT NULL,
+    batch_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity MEDIUMINT,
+    PRIMARY KEY (batch_id),
+    FOREIGN KEY (product_id) REFERENCES product(product_id),
+    FOREIGN KEY (batch_id) REFERENCES batch(batch_id)
+);
+
+INSERT INTO inventory ('batch_id', 'product_id', 'quantity') VALUES ('1', '1', '200');
+INSERT INTO inventory ('batch_id', 'product_id', 'quantity') VALUES ('2', '2', '10');
+INSERT INTO inventory ('batch_id', 'product_id', 'quantity') VALUES ('3', '3', '10000');
+INSERT INTO inventory ('batch_id', 'product_id', 'quantity') VALUES ('4', '4', '4');
+INSERT INTO inventory ('batch_id', 'product_id', 'quantity') VALUES ('5', '5', '50');
+
+--------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE sales (
 	sales_id INT AUTO_INCREMENT UNIQUE NOT NULL,
