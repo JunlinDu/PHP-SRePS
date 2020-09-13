@@ -3,10 +3,10 @@ import re
 
 connect = connection.conn()
 
-
 def retrieve_product_sales(productName, startDate, endDate):
     '''
-    Returns an associative array
+    This function checks the number of sales of a
+    product in a given time period
     @type productName: str
     @param productName: the name of a specific product
 
@@ -15,8 +15,9 @@ def retrieve_product_sales(productName, startDate, endDate):
 
     @type endDate: str
     @param endDate: date to.
-
     Date must be in yyyy-mm-dd format.
+
+    @return: an associative array.
 
     Example:
     >>> retrieve_product_sales('Guck - 1 handful', '2020-09-01', '2020-09-09')
@@ -49,12 +50,30 @@ def retrieve_product_sales(productName, startDate, endDate):
     connect.close()
     return results
 
+# check a customer's
+def retrieve_customer_purchase_item():
+    mycursor = connect.cursor(buffered=True)
+    mycursor.execute(query)
+    results = mycursor.fetchall()
+    connect.close()
+    return results
 
 
 
+def retrieve_product_exp_date(productName):
+
+    assert type(productName) == str
+
+    return
+
+
+# check manufacturer of a product
+
+# check products by manufacturer
 
 
 
 if __name__ == "__main__":
     result = retrieve_product_sales('Guck - 1 handful', '2020--01', '2020-09-09')
     print(result)
+
