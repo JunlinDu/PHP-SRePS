@@ -1,5 +1,6 @@
 import mysql.connector
 
+
 def conn():
     config = {
         "user": "root",
@@ -16,7 +17,7 @@ def conn():
         print("connection error")
 
 
-def get_results (query):
+def get_results(query):
     '''
     This method returns a query result for a given query
 

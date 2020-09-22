@@ -1,7 +1,7 @@
 import connection
 import re
 
-def retrieve_product_sales(productName, startDate, endDate):
+def retrieve_product_sales(productName, startDate, endDate, cursor):
     '''
     This function checks the number of sales of a
     product in a given time period
@@ -11,8 +11,9 @@ def retrieve_product_sales(productName, startDate, endDate):
     @type startDate: str
     :param startDate: date from.
     @type endDate: str
-    :param endDate: date to.
-    Date must be in yyyy-mm-dd format.
+    :param endDate: date to. Note: Date must be in yyyy-mm-dd format.
+    @type: cursor: Subclass of CMySQLCursor
+    :param cursor: a cursor
     :return: an associative array.
 
     Example:
@@ -40,11 +41,11 @@ def retrieve_product_sales(productName, startDate, endDate):
             "AND P.product_name LIKE '" + productName + "' "
             "GROUP BY P.product_name"
     )
+    cursor.execute(query)
+    return mycursor.fetchall()
 
-    return connection.get_results(query)
 
-
-def retrieve_product_exp_date(productName):
+def retrieve_product_exp_date(productName, cursor):
     '''
     This function returns the batch_id, productname, and expiry date
     for a product (there could be multiple batch_ids and expirt dates
@@ -78,7 +79,8 @@ def retrieve_product_exp_date(productName):
         "GROUP BY I.Batch_Id ,P.product_name"
     )
 
-    return connection.get_results(query)
+    cursor.execute(query)
+    return mycursor.fetchall()
 
 # check a customer's
 def retrieve_customer_purchase_item():
@@ -89,8 +91,12 @@ def retrieve_customer_purchase_item():
 # check products by manufacturer
 
 
-
 if __name__ == "__main__":
-    result = retrieve_product_sales('Guck - 1 handful', '2020-09-01', '2020-09-09')
+    connect = connection.conn()
+    # Note: cursor must be set up this way (although the parameter 'buffered=True')
+    # can be omitted. Otherwise 'weak referenced entity does not exist error will occur'
+    mycursor = connect.cursor(buffered=True)
+    result = retrieve_product_sales('Guck - 1 handful', '2020-09-01', '2020-09-09', mycursor)
     print(result)
-    print(retrieve_product_exp_date('Panadol - 25 pill box'))
+    result = retrieve_product_exp_date('Panadol - 25 pill box', mycursor)
+    print(result)
