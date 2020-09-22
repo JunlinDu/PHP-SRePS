@@ -13,7 +13,7 @@ def retrieve_product_sales(productName, startDate, endDate, cursor):
     @type endDate: str
     :param endDate: date to. Note: Date must be in yyyy-mm-dd format.
     @type: cursor: Subclass of CMySQLCursor
-    :param cursor: a cursor
+    :param cursor: a cursor.
     :return: an associative array.
 
     Example:
@@ -42,7 +42,7 @@ def retrieve_product_sales(productName, startDate, endDate, cursor):
             "GROUP BY P.product_name"
     )
     cursor.execute(query)
-    return mycursor.fetchall()
+    return cursor.fetchall()
 
 
 def retrieve_product_exp_date(productName, cursor):
@@ -80,7 +80,7 @@ def retrieve_product_exp_date(productName, cursor):
     )
 
     cursor.execute(query)
-    return mycursor.fetchall()
+    return cursor.fetchall()
 
 # check a customer's
 def retrieve_customer_purchase_item():
@@ -91,12 +91,30 @@ def retrieve_customer_purchase_item():
 # check products by manufacturer
 
 
+def check_value(table_name, col_name, col_to_match, condition, cursor):
+    '''
+
+    :param table_name:
+    :param col_name:
+    :param col_to_match:
+    :param condition:
+    :param cursor:
+    :return:
+    '''
+    query = (
+            "SELECT " + col_name + " FROM " + table_name + " "
+            "WHERE " + col_to_match + " LIKE '" + condition + "'; "
+    )
+    cursor.execute(query)
+    return cursor.fetchall()
+
 if __name__ == "__main__":
     connect = connection.conn()
     # Note: cursor must be set up this way (although the parameter 'buffered=True')
-    # can be omitted. Otherwise 'weak referenced entity does not exist error will occur'
-    mycursor = connect.cursor(buffered=True)
-    result = retrieve_product_sales('Guck - 1 handful', '2020-09-01', '2020-09-09', mycursor)
+    # can be omitted. Otherwise 'weakly-referenced object no longer exists' error will occur
+    c = connect.cursor(buffered=True)
+    result = retrieve_product_sales('Guck - 1 handful', '2020-09-01', '2020-09-09', c)
     print(result)
-    result = retrieve_product_exp_date('Panadol - 25 pill box', mycursor)
+    result = retrieve_product_exp_date('Panadol - 25 pill box', c)
     print(result)
+    connect.close()
