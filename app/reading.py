@@ -41,12 +41,7 @@ def retrieve_product_sales(productName, startDate, endDate):
             "GROUP BY P.product_name"
     )
 
-    connect = connection.conn()
-    mycursor = connect.cursor(buffered=True)
-    mycursor.execute(query)
-    results = mycursor.fetchall()
-    connect.close()
-    return results
+    return connection.get_results(query)
 
 
 def retrieve_product_exp_date(productName):
@@ -62,7 +57,7 @@ def retrieve_product_exp_date(productName):
     Example:
     >>> retrieve_product_exp_date('Panadol - 25 pill box')
     [(1, 'Panadol - 25 pill box', datetime.date(2022, 9, 19))]
-    
+
     +---------+-----------------------+------------+
     | BatchId | ProductName           | ExpDate    |
     +---------+-----------------------+------------+
@@ -83,12 +78,7 @@ def retrieve_product_exp_date(productName):
         "GROUP BY I.Batch_Id ,P.product_name"
     )
 
-    connect = connection.conn()
-    mycursor = connect.cursor(buffered=True)
-    mycursor.execute(query)
-    results = mycursor.fetchall()
-    connect.close()
-    return results
+    return connection.get_results(query)
 
 # check a customer's
 def retrieve_customer_purchase_item():
