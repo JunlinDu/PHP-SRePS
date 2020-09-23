@@ -2,6 +2,7 @@ import connection
 import reading
 import re
 
+
 def insert_product(product_name, manufacturer_name, price, db, cursor):
     '''
     This function inserts a new product into the product table.
@@ -38,8 +39,8 @@ def insert_product(product_name, manufacturer_name, price, db, cursor):
     if len(alist) == 0:
         manufacturer_id = insert_manufacturer(manufacturer_name, db, cursor)
         query = (
-            "INSERT INTO product (`product_name`, `manufacturer_id`, `price`) "
-            "VALUES  ('" + product_name + "', '" + str(manufacturer_id) + "', '" + str(price) + "'); "
+                "INSERT INTO product (`product_name`, `manufacturer_id`, `price`) "
+                "VALUES  ('" + product_name + "', '" + str(manufacturer_id) + "', '" + str(price) + "'); "
         )
         cursor.execute(query)
         db.commit()
@@ -211,7 +212,31 @@ def insert_customer(surname, given_name, address, dob, db, cursor):
     return cursor.lastrowid
 
 
-def insert_new_sale():
+def insert_new_sale(date, customer_id=0, **prod_id_qty):
+    '''
+
+    :param date:
+    :param customer_id:
+    :param prod_id_qty: @type: class 'dict'
+    :return:
+    '''
+    assert type(date) == str
+    assert type(customer_id) == int
+    assert re.search("^\d{4}-\d{2}-\d{2}$", date)
+    for product_id, quantity in prod_id_qty.items():
+        assert type(product_id) == int
+        assert type(quantity) == int
+
+    query = (
+        "INSERT INTO sales (`customer_id`, `date`) "
+        "VALUES ('" + str(customer_id) + "', '" + date + "'); "
+    )
+
+
+    return
+
+
+def insert_sale_item():
     return
 
 
