@@ -5,7 +5,11 @@ PHP-SRePS/
 │
 ├── app/
 │   ├── connection.py
-│   └── reading.py
+│   ├── deleting.py
+│   ├── inserting.py
+│   ├── main.py
+│   ├── reading.py
+│   └── updating.py
 │
 ├── .gitignore
 ├── exportCSV.py
