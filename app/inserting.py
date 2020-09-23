@@ -78,19 +78,68 @@ def insert_manufacturer(manufacturer_name, db, cursor):
 
 def insert_batch(product_id, exp_date, import_date, quantity, db, cursor):
     '''
-    This function .....
+    This function updates both the batch table and inventory table, and returns
+    the corresponding batch_id.
+    Note: batch table and inventory table may seem to represent the same thing
+    and the inventory table may seem redundant. However, the design of the databse
+    assigns these two tables different purposes. Records in the batch table, after
+    initial insertion will not be changed in the future; the purpose of the batch
+    table is to keep track of the order batches from suppliers. The inventory table,
+    on the other hand, is dynamic, the quantity column will change (mainly decrease
+    in value) as customers make purchase.
 
-    :param product_id:
-    :param exp_date:
-    :param import_date:
-    :param quantity:
-    :param db:
-    :param cursor:
-    :return:
+    :param product_id: ID of a product
+    :param exp_date: expire date of the product
+    :param import_date: the date on which the product is imported
+    :param quantity: quantity of the product
+    :param db: connection to the database
+    :param cursor: the cursor of the database connection
+    :return: batch ID
+
+    Example:
+    Original batch table:
+    +----------+------------+------------+-------------+----------+
+    | batch_id | product_id | exp_date   | import_date | quantity |
+    +----------+------------+------------+-------------+----------+
+    |        4 |          4 | NULL       | NULL        |     NULL |
+    |        5 |          5 | 0000-01-01 | NULL        |       50 |
+    +----------+------------+------------+-------------+----------+
+    Original inventory table:
+    +----------+----------+------------+----------+
+    | inven_id | batch_id | product_id | quantity |
+    +----------+----------+------------+----------+
+    |        5 |        4 |          4 |        4 |
+    |        6 |        5 |          2 |       50 |
+    +----------+----------+------------+----------+
+
+    >>> insert_batch(4, '2021-12-10', '2019-09-10', 500, connect, mycursor)
+    @return: 6
+    batch table after the funtion runs:
+    +----------+------------+------------+-------------+----------+
+    | batch_id | product_id | exp_date   | import_date | quantity |
+    +----------+------------+------------+-------------+----------+
+    |        4 |          4 | NULL       | NULL        |     NULL |
+    |        5 |          5 | 0000-01-01 | NULL        |       50 |
+    |        6 |          4 | 2021-12-10 | 2019-09-10  |      500 |
+    +----------+------------+------------+-------------+----------+
+    inventory table after the function runs:
+    +----------+----------+------------+----------+
+    | inven_id | batch_id | product_id | quantity |
+    +----------+----------+------------+----------+
+    |        5 |        4 |          4 |        4 |
+    |        6 |        5 |          2 |       50 |
+    |        7 |        6 |          4 |      500 |
+    +----------+----------+------------+----------+
+
     '''
+    assert type(exp_date) == str and type(import_date) == str
+    assert re.search("^\d{4}-\d{2}-\d{2}$", exp_date) and re.search("^\d{4}-\d{2}-\d{2}$", import_date)
+    assert type(product_id) == int
+    assert type(quantity) == int
+
     query = (
             "INSERT INTO batch (`product_id`, `exp_date`, `import_date`, `quantity`) "
-            "VALUES ('" + product_id + "', '" + exp_date + "', '" + import_date + "', '" + quantity + "');"
+            "VALUES ('" + str(product_id) + "', '" + exp_date + "', '" + import_date + "', '" + str(quantity) + "'); "
     )
     cursor.execute(query)
     db.commit()
@@ -100,8 +149,33 @@ def insert_batch(product_id, exp_date, import_date, quantity, db, cursor):
 
 
 def insert_inventory(batch_id, product_id, quantity, db, cursor):
+    '''
+    This function inserts into the inventory table 1 record and
+    returns the corresponding ID.
 
-    return
+    :param batch_id: ID of a batch in the batch table
+    :param product_id: ID of a product
+    :param quantity: product quantity
+    :param db: connection to the database
+    :param cursor: the cursor of the database connection
+    :return: inventory ID
+
+    Example:
+    Suppose the last updated inventory id was 5
+    >>> insert_inventory(5, 2, 50, connect, mycursor)
+    @return: 6
+    '''
+    assert type(batch_id) == int
+    assert type(product_id) == int
+    assert type(quantity) == int
+
+    query = (
+            "INSERT INTO inventory (`batch_id`, `product_id`, `quantity`)  "
+            "VALUES ('" + str(batch_id) + "', '" + str(product_id) + "', '" + str(quantity) + "'); "
+    )
+    cursor.execute(query)
+    db.commit()
+    return cursor.lastrowid
 
 
 def insert_customer(surname, given_name, address, dob, db, cursor):
@@ -124,7 +198,9 @@ def insert_customer(surname, given_name, address, dob, db, cursor):
     assert type(surname) == str
     assert type(given_name) == str
     assert type(address) == str
-    assert type(dob) == str and re.search("^\d{4}-\d{2}-\d{2}$", dob)
+    assert type(dob) == str
+    assert re.search("^\d{4}-\d{2}-\d{2}$", dob)
+
     query = (
             "INSERT INTO customer (`surname`, `given_name`, `address`, `dob`) "
             "VALUES  ('" + surname + "', '" + given_name + "', '" + address + "', '" + dob + "'); "
@@ -145,5 +221,5 @@ if __name__ == "__main__":
     # Note: cursor must be set up this way (although the parameter 'buffered=True')
     # can be omitted. Otherwise 'weakly-referenced object no longer exists' error will occur
     mycursor = connect.cursor(buffered=True)
-    print(insert_customer('Matthew', 'Peterson', 'vic 3033', '1998-08-08', connect, mycursor))
+    print(insert_batch(4, '2021-12-10', '2019-09-10', 500, connect, mycursor))
     connect.close()
