@@ -2,6 +2,11 @@ import mysql.connector
 
 
 def conn():
+    '''
+    Establishing a connection to the database
+
+    :return: a database connection
+    '''
     config = {
         "user": "root",
         "passwd": "password",
@@ -19,7 +24,10 @@ def conn():
 
 def get_results(query):
     '''
-    This method returns a query result for a given query
+    This function returns a query result for a given query
+    Should be used mainly for one-off reading from the database
+    Note: Insertion and Update will not work as the changes will
+    not be committed to the database table.
 
     :param query: a String that is a valid SQL query
     :return: the result of the query

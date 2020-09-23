@@ -14,7 +14,7 @@ def retrieve_product_sales(productName, startDate, endDate, cursor):
     :param endDate: date to. Note: Date must be in yyyy-mm-dd format.
     @type: cursor: Subclass of CMySQLCursor
     :param cursor: a cursor.
-    :return: an associative array.
+    :return: a list.
 
     Example:
     >>> retrieve_product_sales('Guck - 1 handful', '2020-09-01', '2020-09-09')
@@ -53,7 +53,7 @@ def retrieve_product_exp_date(productName, cursor):
 
     @type productName: str
     :param productName: the name of a specific product
-    :return: an associative array.
+    :return: a list.
 
     Example:
     >>> retrieve_product_exp_date('Panadol - 25 pill box')
@@ -86,20 +86,32 @@ def retrieve_product_exp_date(productName, cursor):
 def retrieve_customer_purchase_item():
     return
 
-# check manufacturer of a product
-
-# check products by manufacturer
-
 
 def check_value(table_name, col_name, col_to_match, condition, cursor):
     '''
+    Note: This function is less likly to be called from the front end.
+    This function checks a column value in a table based on a given condition,
+    is mainly used for checking the existance of certian record when performing
+    updates.
 
-    :param table_name:
-    :param col_name:
-    :param col_to_match:
+    :param table_name: name of the table
+    :param col_name: the name of the column of which the value is retrieved
+    :param col_to_match: the name of the column against which the contion is verified
     :param condition:
-    :param cursor:
-    :return:
+    :param cursor: cursor of the database connection
+    :return: a list
+
+    Example:
+    Suppose this function queries the table below:
+    +------------+-----------------------------+-----------------+---------+
+    | product_id | product_name                | manufacturer_id | price   |
+    +------------+-----------------------------+-----------------+---------+
+    |          1 | Panadol - 25 pill box       |               1 |    5.60 |
+    |          2 | Meat - unknown origin, 200g |               2 |   15.20 |
+    +------------+-----------------------------+-----------------+---------+
+
+    >>> reading.check_value("product", "product_id", "product_name", 'Panadol - 25 pill box', cursor)
+    @return: [(1,)]
     '''
     query = (
             "SELECT " + col_name + " FROM " + table_name + " "
@@ -107,6 +119,7 @@ def check_value(table_name, col_name, col_to_match, condition, cursor):
     )
     cursor.execute(query)
     return cursor.fetchall()
+
 
 if __name__ == "__main__":
     connect = connection.conn()
