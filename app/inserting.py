@@ -212,33 +212,63 @@ def insert_customer(surname, given_name, address, dob, db, cursor):
     return cursor.lastrowid
 
 
-def insert_new_sale(date, customer_id=0, **prod_id_qty):
+def insert_new_sale(date, db, cursor, customer_id=1, *prod_id_qty):
     '''
+    This function adds a sales record.
+    This function modifies two tables: sales table and sale_items table
+    and it returns the corresponding sale_id.
+    The parameter customer_id has a default value of 1. In the database
+    table, the customer record which has an id of 1 is a non-registered
+    customer.
+    The vararg *prod_id_qty contains a tuple of tuples, where the value
+    at index position 0 indicates the product id, and the value at index
+    position 1 indicates product quantity.
 
-    :param date:
-    :param customer_id:
-    :param prod_id_qty: @type: class 'dict'
-    :return:
+    :param date: the date of sale. Format: yyyy-mm-dd
+    :param db: connection to the database
+    :param cursor: the cursor of the database connection
+    :param customer_id: ID of the customer
+    :param prod_id_qty: tuples
+    :return: sale_id
+
+    Example:
+    >>> insert_new_sale("2020-09-10", connect, mycursor, 2, (1, 2), (2, 2), (3, 10))
+    Please run this fucntion in if __name__ == "__main__" and observe the changes of
+    your local database.
     '''
     assert type(date) == str
     assert type(customer_id) == int
     assert re.search("^\d{4}-\d{2}-\d{2}$", date)
-    for product_id, quantity in prod_id_qty.items():
-        assert type(product_id) == int
-        assert type(quantity) == int
+    for arg in prod_id_qty:
+        assert type(arg) == tuple
 
     query = (
         "INSERT INTO sales (`customer_id`, `date`) "
         "VALUES ('" + str(customer_id) + "', '" + date + "'); "
     )
+    cursor.execute(query)
+    db.commit()
+    sale_id = cursor.lastrowid
+    for arg in prod_id_qty:
+        insert_sale_item(arg[0], arg[1], sale_id, db, cursor)
+
+    return sale_id
 
 
-    return
+def insert_sale_item(product_id, quantity, sale_id, db, cursor):
+    '''
+    Note: This function should never be called from the front end.
+    '''
+    query = (
+        "INSERT INTO sale_items  (`sales_id`, `product_id`, `quantity`) "
+        "VALUES ('" + str(sale_id) + "', '" + str(product_id) + "', '" + str(quantity) + "'); "
+    )
+    cursor.execute(query)
+    db.commit()
+    return cursor.lastrowid
 
-
-def insert_sale_item():
-    return
-
+def test(*args):
+    print(type(args))
 
 if __name__ == "__main__":
     # tests
@@ -246,5 +276,5 @@ if __name__ == "__main__":
     # Note: cursor must be set up this way (although the parameter 'buffered=True')
     # can be omitted. Otherwise 'weakly-referenced object no longer exists' error will occur
     mycursor = connect.cursor(buffered=True)
-    print(insert_batch(4, '2021-12-10', '2019-09-10', 500, connect, mycursor))
+    print(insert_new_sale("2020-09-22", connect, mycursor, 2, (1, 2), (2, 2), (3, 10)))
     connect.close()
