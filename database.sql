@@ -29,7 +29,7 @@ CREATE TABLE customer (
     PRIMARY KEY (customer_id)
 );
 
-INSERT INTO customer (`surname`, `given_name`, `address`, `dob`) VALUES ('Grim', 'Dibbler', '98 fiddle street, melb central', '2008-07-04');
+INSERT INTO customer (`surname`, `given_name`, `address`, `dob`) VALUES ('unknown', 'unknown', NULL, NULL);
 INSERT INTO customer (`surname`, `given_name`, `address`, `dob`) VALUES ('Spin', 'Shooter', '62 buddy drive, sunshine west', '2002-02-02');
 INSERT INTO customer (`surname`, `given_name`, `address`, `dob`) VALUES ('Fut', 'Jigglehouse', '72 thirteen lane, fertree gully', '0600-12-25');
 INSERT INTO customer (`surname`, `given_name`, `address`) VALUES ('Perman', 'Danger', '2000 excelcior glade, wilderness');
