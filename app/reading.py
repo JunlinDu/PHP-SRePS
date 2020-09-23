@@ -1,4 +1,5 @@
 import connection
+import updating
 import re
 
 def retrieve_product_sales(productName, startDate, endDate, cursor):
