@@ -4,6 +4,10 @@ import reading
 import updating
 import re
 
+'''
+This module contains functions that performs Insertion
+
+'''
 
 def insert_product(product_name, manufacturer_name, price, db, cursor):
     '''
