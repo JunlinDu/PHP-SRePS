@@ -12,6 +12,7 @@ PHP-SRePS/
 │   │   ├── product.csv
 │   │   ├── sale_items.csv
 │   │   └── sales.csv
+│   │   
 │   ├── connection.py
 │   ├── deleting.py
 |   ├── exportCSV.py
