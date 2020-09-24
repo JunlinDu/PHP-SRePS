@@ -2,6 +2,10 @@ import mysql.connector.cursor_cext
 import connection
 import reading
 
+'''
+This module contains functions that performs Update
+
+'''
 
 def update_quantity(product_id, red_quan, db, cursor):
     '''
