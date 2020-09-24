@@ -91,20 +91,40 @@ def retrieve_product_exp_date(productName, cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
-# check a customer's
+
 def retrieve_customer_purchase_item(custid, cursor):
     '''
     This function retrieves a customer's entire shipping history
     given his/her ID
 
     :param custid: ID of the customer
-    :param cursor:
-    :return:
+    :param cursor: cursor of the database connection
+    :return: a list that contians the customer's shopping history
+
+    Example:
+    >>> retrieve_customer_purchase_item(1, c)
+    @:returns:
+    [('Grim', 'Dibbler', 'Panadol - 25 pill box', 1),
+    ('Grim', 'Dibbler', 'Meat - unknown origin, 200g', 5),
+    ('Grim', 'Dibbler', 'Meat - unknown origin, 200g', 3)]
     '''
     assert type(custid) == int
     assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
            or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
-    return
+    query = (
+        "SELECT C.Surname, C.Given_name, P.Product_name, I.Quantity "
+        "FROM customer C "
+        "INNER JOIN sales S "
+        "ON C.Customer_id = S.Customer_id "
+        "INNER JOIN sale_items I "
+        "ON I.sales_id = S.sales_id "
+        "INNER JOIN product P "
+        "ON P.product_id = I.product_id "
+        "WHERE C.Customer_id = " + str(custid) + " "
+        "GROUP BY C.Surname, C.Given_name, P.Product_name, I.Quantity;"
+    )
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
 def check_value(table_name, col_name, col_to_match, condition, cursor):
@@ -257,6 +277,11 @@ if __name__ == "__main__":
     print(result)
     print("\n")
     result = retrieve_entire_tables(tables.TableEnum.product, c)
+    print(result)
+    for item in result:
+        print(item)
+
+    result = retrieve_customer_purchase_item(1, c)
     print(result)
     for item in result:
         print(item)
