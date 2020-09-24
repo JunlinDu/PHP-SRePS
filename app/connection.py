@@ -1,5 +1,8 @@
 import mysql.connector
+'''
+This module contains functions that connects to the local database
 
+'''
 
 def conn():
     '''
