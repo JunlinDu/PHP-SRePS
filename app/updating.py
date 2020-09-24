@@ -45,7 +45,8 @@ def update_quantity(product_id, red_quan, db, cursor):
     assert type(product_id) == int
     assert type(red_quan) == int
     assert type(db) == mysql.connector.connection_cext.CMySQLConnection
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
+           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     alist = reading.batch_retrieval_of_oldest(product_id, red_quan, cursor)
     if len(alist) == 0:
@@ -94,7 +95,8 @@ def update_manufacturer(manufacturer_name, manufacturer_id, db, cursor):
     assert type(manufacturer_name) == str
     assert type(manufacturer_id) == int
     assert type(db) == mysql.connector.connection_cext.CMySQLConnection
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
+           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     conditionStr = "WHERE manufacturer_id = " + str(manufacturer_id) + "; "
     cursor.execute(

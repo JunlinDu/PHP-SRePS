@@ -34,7 +34,8 @@ def retrieve_product_sales(productName, startDate, endDate, cursor):
 
     assert type(productName) == str
     assert re.search("^\d{4}-\d{2}-\d{2}$", startDate) and re.search("^\d{4}-\d{2}-\d{2}$", endDate)
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
+           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
             "SELECT P.product_name AS ProductName, SUM(I.Quantity) AS TotalSales "
@@ -73,7 +74,8 @@ def retrieve_product_exp_date(productName, cursor):
     '''
 
     assert type(productName) == str
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
+           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
         "SELECT I.batch_id AS BatchId, P.product_name AS ProductName, B.exp_date AS ExpDate "
@@ -90,7 +92,18 @@ def retrieve_product_exp_date(productName, cursor):
     return cursor.fetchall()
 
 # check a customer's
-def retrieve_customer_purchase_item():
+def retrieve_customer_purchase_item(custid, cursor):
+    '''
+    This function retrieves a customer's entire shipping history
+    given his/her ID
+
+    :param custid: ID of the customer
+    :param cursor:
+    :return:
+    '''
+    assert type(custid) == int
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
+           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
     return
 
 
@@ -124,7 +137,8 @@ def check_value(table_name, col_name, col_to_match, condition, cursor):
     assert type(table_name) == str
     assert type(col_to_match) == str
     assert type(condition) == str
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
+           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
             "SELECT " + col_name + " FROM " + table_name + " "
@@ -148,7 +162,8 @@ def retrieve_prodname_by_id(product_id, cursor):
     '''
 
     assert type(product_id) == int
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
+           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
         "SELECT product_name FROM product "
@@ -179,7 +194,8 @@ def batch_retrieval_of_oldest(product_id, red_quan, cursor):
     '''
     assert type(product_id) == int
     assert type(red_quan) == int
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
+           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
             "SELECT I.batch_id FROM inventory I "
@@ -214,7 +230,8 @@ def retrieve_entire_tables(table_enum, cursor):
 
     '''
     assert type(table_enum) == tables.TableEnum
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
+           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
         "SELECT * FROM " + tablelist[table_enum.value] + "; "
@@ -227,7 +244,7 @@ if __name__ == "__main__":
     connect = connection.conn()
     # Note: cursor must be set up this way (although the parameter 'buffered=True')
     # can be omitted. Otherwise 'weakly-referenced object no longer exists' error will occur
-    c = connect.cursor(buffered=True)
+    c = connect.cursor()
     result = retrieve_product_sales('Guck - 1 handful', '2020-09-01', '2020-09-09', c)
     print(result)
     result = retrieve_product_exp_date('Panadol - 25 pill box', c)
