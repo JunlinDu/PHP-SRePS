@@ -1,6 +1,7 @@
 import connection
 import reading
 
+
 def update_quantity(product_id, red_quan, db, cursor):
     '''
     This function updates quantity (mainly reduces) of a product in the inventory
@@ -47,9 +48,9 @@ def update_quantity(product_id, red_quan, db, cursor):
         return -1
     else:
         query = (
-            "UPDATE Inventory "
-            "SET quantity = quantity - " + str(red_quan) + " "
-            "WHERE batch_id = " + str(alist[0][0]) + "; "
+                "UPDATE Inventory "
+                "SET quantity = quantity - " + str(red_quan) + " "
+                                                               "WHERE batch_id = " + str(alist[0][0]) + "; "
         )
         cursor.execute(query)
         db.commit()
@@ -58,16 +59,52 @@ def update_quantity(product_id, red_quan, db, cursor):
 
 def update_manufacturer(manufacturer_name, manufacturer_id, db, cursor):
     '''
-        Note: This function is able to update the manufacturer of the medicine. This function can be used when changing medicine manufacturers.
+    This function updates a manufacturer name given an id
+
+    :param manufacturer_name: new name of the manufacturer
+    :param manufacturer_id: the ID of the manufacturer whose name is inteded to be modified
+    :param db: the database connection
+    :param cursor: cursor of the database connection
+    :return: -1 if there's no corresponding manufacturer of provided ID. 0 if updated successfully
+
+    Example:
+    Before:
+    +-----------------+-----------------------+
+    | manufacturer_id | manufacturer_name     |
+    +-----------------+-----------------------+
+    |               1 | Chemical Company      |
+    |               5 | Found It              |
+    |              16 | Aavis Pharmaceuticals |
+    +-----------------+-----------------------+
+    >>> update_manufacturer("updated", 5, connect, c)
+    @:returns: 0
+    After:
+    +-----------------+-----------------------+
+    | manufacturer_id | manufacturer_name     |
+    +-----------------+-----------------------+
+    |               1 | Chemical Company      |
+    |               5 | updated               |
+    |              16 | Aavis Pharmaceuticals |
+    +-----------------+-----------------------+
     '''
     assert type(manufacturer_name) == str
     assert type(manufacturer_id) == int
-    update = (
-            "update manufacturer set ('Manufacturer_name') where name= ('Manufacturer_id') "
-            "select * from manufacturer where (+ Manufacturer_id +)"
-    )
-    cursor.execute(update)
-    return cursor.fetchone()
+
+    conditionStr = "WHERE manufacturer_id = " + str(manufacturer_id) + "; "
+    cursor.execute(
+        "SELECT * FROM MANUFACTURER " + conditionStr)
+    alist = cursor.fetchall()
+    if len(alist) == 0:
+        return -1
+    else:
+        query = (
+            "UPDATE manufacturer "
+            "SET manufacturer_name = '" + manufacturer_name + "' " +
+            conditionStr
+        )
+        cursor.execute(query)
+        db.commit()
+        return 0
 
 
 if __name__ == "__main__":
@@ -75,6 +112,7 @@ if __name__ == "__main__":
     # Note: cursor must be set up this way (although the parameter 'buffered=True')
     # can be omitted. Otherwise 'weakly-referenced object no longer exists' error will occur
     c = connect.cursor(buffered=True)
-    result = update_quantity(3, 20, connect, c)
+    # result = update_quantity(3, 20, connect, c)
+    # print(result)
+    result = update_manufacturer("updated", 5, connect, c)
     print(result)
-
