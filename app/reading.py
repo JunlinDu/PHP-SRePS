@@ -1,6 +1,7 @@
 import connection
 import re
 
+
 def retrieve_product_sales(productName, startDate, endDate, cursor):
     '''
     This function checks the number of sales of a
@@ -121,14 +122,55 @@ def check_value(table_name, col_name, col_to_match, condition, cursor):
     return cursor.fetchall()
 
 
-def check_correct_product_retrival_from_inventory(product_id, red_quan, cursor):
+def retrieve_prodname_by_id(product_id, cursor):
+    '''
+    This function returns a product name given an id.
+
+    :param product_id: ID of the product
+    :param cursor: cursor of the database connection
+    :return: @String | Product name
+
+    Example:
+    >>> retrieve_prodname_by_id(2, c)
+    @:returns: "Meat - unknown origin, 200g"
+    '''
+    query = (
+        "SELECT product_name FROM product "
+        "WHERE product_id = " + str(product_id) + "; "
+    )
+    cursor.execute(query)
+    alist = cursor.fetchall()
+    return alist[0][0]
+
+
+def batch_retrieval_of_oldest(product_id, red_quan, cursor):
+    '''
+    Note: this function mainly serves as a utility function for operations in updating
+    and is less likely to be called from the front end.
+
+    This function returns the batch_id from the inventory for a provided product
+    where the product's quantity is more than 0, and it is greater than 0 after
+    quantity reduction, and is of the earliest expire date.
+
+    :param product_id: ID of product
+    :param red_quan: quantity to be reduced
+    :param cursor: cursor of the database connection
+    :return: a list contains the batch_id of the selected product
+
+    Example:
+    >>> batch_retrieval_of_oldest()(1, 10, c)
+    @:returns [(1,)]
+    '''
+    assert type(product_id) == int
+    assert type(red_quan) == int
+
     query = (
             "SELECT I.batch_id FROM inventory I "
             "INNER JOIN batch B "
             "ON I.batch_id = B.batch_id "
             "WHERE (I.product_id = " + str(product_id) + ") "
             "AND (I.quantity <> 0) "
-            "AND (I.quantity - " + type(red_quan) + " >= 0 ) "
+            "AND (I.quantity - " + str(red_quan) + " >= 0 ) "
             "ORDER BY B.exp_date ASC LIMIT 1; "
     )
     cursor.execute(query)
@@ -144,6 +186,10 @@ if __name__ == "__main__":
     print(result)
     result = retrieve_product_exp_date('Panadol - 25 pill box', c)
     print(result)
-    result = check_correct_product_retrival_from_inventory(1, 10, c)
+    result = batch_retrieval_of_oldest(3, 10, c)
+    print(result)
+    print(len(result))
+    print(result[0][0])
+    result = retrieve_prodname_by_id(2, c)
     print(result)
     connect.close()
