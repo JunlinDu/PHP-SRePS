@@ -1,5 +1,8 @@
 import connection
 import re
+import tables
+
+tablelist = ["customer", "manufacturer", "product", "inventory", "batch", "sales", "sale_items"]
 
 
 def retrieve_product_sales(productName, startDate, endDate, cursor):
@@ -177,6 +180,33 @@ def batch_retrieval_of_oldest(product_id, red_quan, cursor):
     return cursor.fetchall()
 
 
+def retrieve_entire_tables(table_enum, cursor):
+    '''
+    This function returns an entire table given an TableEnum
+
+    :param table_enum: an Enum Object that corresponds to a table (refer to tables.py).
+    :param cursor: a cursor of the database connection
+    :return: a list contains an entire table
+
+    Example:
+    >>> retrieve_entire_tables(tables.TableEnum.product, c)
+    @:returns:
+    [(1, 'Panadol - 25 pill box', 1, Decimal('5.60')),
+    (2, 'Meat - unknown origin, 200g', 2, Decimal('15.20')),
+    (3, 'Liquid - heavy, 100ml cups', 3, Decimal('2020.05')),
+    (4, 'Pain - heavy, 1 serving', 4, Decimal('0.01')),
+    (5, 'Guck - 1 handful', 5, None),
+    (6, 'Panadol - 26 pill box', 1, Decimal('5.60'))]
+
+    '''
+    assert type(table_enum) == tables.TableEnum
+    query = (
+        "SELECT * FROM " + tablelist[table_enum.value] + "; "
+    )
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
 if __name__ == "__main__":
     connect = connection.conn()
     # Note: cursor must be set up this way (although the parameter 'buffered=True')
@@ -192,4 +222,9 @@ if __name__ == "__main__":
     print(result[0][0])
     result = retrieve_prodname_by_id(2, c)
     print(result)
+    print("\n")
+    result = retrieve_entire_tables(tables.TableEnum.product, c)
+    print(result)
+    for item in result:
+        print(item)
     connect.close()
