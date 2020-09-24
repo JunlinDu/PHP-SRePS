@@ -1,3 +1,4 @@
+import mysql.connector.cursor_cext
 import connection
 import reading
 import updating
@@ -35,6 +36,9 @@ def insert_product(product_name, manufacturer_name, price, db, cursor):
     assert type(product_name) == str
     assert type(manufacturer_name) == str
     assert type(price) == float
+    assert type(db) == mysql.connector.connection_cext.CMySQLConnection
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+
     alist = reading.check_value("product", "product_id",
                                 "product_name", product_name, cursor)
     if len(alist) == 0:
@@ -63,6 +67,9 @@ def insert_manufacturer(manufacturer_name, db, cursor):
 
     '''
     assert type(manufacturer_name) == str
+    assert type(db) == mysql.connector.connection_cext.CMySQLConnection
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+
     alist = reading.check_value("manufacturer", "manufacturer_id",
                                 "manufacturer_name", manufacturer_name, cursor)
     if len(alist) == 0:
@@ -138,6 +145,8 @@ def insert_batch(product_id, exp_date, import_date, quantity, db, cursor):
     assert re.search("^\d{4}-\d{2}-\d{2}$", exp_date) and re.search("^\d{4}-\d{2}-\d{2}$", import_date)
     assert type(product_id) == int
     assert type(quantity) == int
+    assert type(db) == mysql.connector.connection_cext.CMySQLConnection
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
 
     query = (
             "INSERT INTO batch (`product_id`, `exp_date`, `import_date`, `quantity`) "
@@ -170,6 +179,8 @@ def insert_inventory(batch_id, product_id, quantity, db, cursor):
     assert type(batch_id) == int
     assert type(product_id) == int
     assert type(quantity) == int
+    assert type(db) == mysql.connector.connection_cext.CMySQLConnection
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
 
     query = (
             "INSERT INTO inventory (`batch_id`, `product_id`, `quantity`)  "
@@ -202,6 +213,8 @@ def insert_customer(surname, given_name, address, dob, db, cursor):
     assert type(address) == str
     assert type(dob) == str
     assert re.search("^\d{4}-\d{2}-\d{2}$", dob)
+    assert type(db) == mysql.connector.connection_cext.CMySQLConnection
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
 
     query = (
             "INSERT INTO customer (`surname`, `given_name`, `address`, `dob`) "
@@ -240,6 +253,8 @@ def insert_new_sale(date, db, cursor, customer_id=1, *prod_id_qty):
     assert type(date) == str
     assert type(customer_id) == int
     assert re.search("^\d{4}-\d{2}-\d{2}$", date)
+    assert type(db) == mysql.connector.connection_cext.CMySQLConnection
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
     for arg in prod_id_qty:
         assert type(arg) == tuple
 
@@ -262,6 +277,9 @@ def insert_sale_item(product_id, quantity, sale_id, db, cursor):
     '''
     Note: This function should never be called from the front end.
     '''
+
+    assert type(db) == mysql.connector.connection_cext.CMySQLConnection
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
     query = (
         "INSERT INTO sale_items  (`sales_id`, `product_id`, `quantity`) "
         "VALUES ('" + str(sale_id) + "', '" + str(product_id) + "', '" + str(quantity) + "'); "

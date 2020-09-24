@@ -1,3 +1,4 @@
+import mysql.connector.cursor_cext
 import connection
 import re
 import tables
@@ -33,6 +34,7 @@ def retrieve_product_sales(productName, startDate, endDate, cursor):
 
     assert type(productName) == str
     assert re.search("^\d{4}-\d{2}-\d{2}$", startDate) and re.search("^\d{4}-\d{2}-\d{2}$", endDate)
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
 
     query = (
             "SELECT P.product_name AS ProductName, SUM(I.Quantity) AS TotalSales "
@@ -71,6 +73,7 @@ def retrieve_product_exp_date(productName, cursor):
     '''
 
     assert type(productName) == str
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
 
     query = (
         "SELECT I.batch_id AS BatchId, P.product_name AS ProductName, B.exp_date AS ExpDate "
@@ -117,6 +120,12 @@ def check_value(table_name, col_name, col_to_match, condition, cursor):
     >>> check_value("product", "product_id", "product_name", 'Panadol - 25 pill box', cursor)
     @return: [(1,)]
     '''
+    assert type(col_name) == str
+    assert type(table_name) == str
+    assert type(col_to_match) == str
+    assert type(condition) == str
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+
     query = (
             "SELECT " + col_name + " FROM " + table_name + " "
             "WHERE " + col_to_match + " LIKE '" + condition + "'; "
@@ -137,6 +146,10 @@ def retrieve_prodname_by_id(product_id, cursor):
     >>> retrieve_prodname_by_id(2, c)
     @:returns: "Meat - unknown origin, 200g"
     '''
+
+    assert type(product_id) == int
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+
     query = (
         "SELECT product_name FROM product "
         "WHERE product_id = " + str(product_id) + "; "
@@ -166,6 +179,7 @@ def batch_retrieval_of_oldest(product_id, red_quan, cursor):
     '''
     assert type(product_id) == int
     assert type(red_quan) == int
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
 
     query = (
             "SELECT I.batch_id FROM inventory I "
@@ -200,6 +214,8 @@ def retrieve_entire_tables(table_enum, cursor):
 
     '''
     assert type(table_enum) == tables.TableEnum
+    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered
+
     query = (
         "SELECT * FROM " + tablelist[table_enum.value] + "; "
     )
