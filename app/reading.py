@@ -1,5 +1,4 @@
 import connection
-import updating
 import re
 
 def retrieve_product_sales(productName, startDate, endDate, cursor):
@@ -111,12 +110,26 @@ def check_value(table_name, col_name, col_to_match, condition, cursor):
     |          2 | Meat - unknown origin, 200g |               2 |   15.20 |
     +------------+-----------------------------+-----------------+---------+
 
-    >>> reading.check_value("product", "product_id", "product_name", 'Panadol - 25 pill box', cursor)
+    >>> check_value("product", "product_id", "product_name", 'Panadol - 25 pill box', cursor)
     @return: [(1,)]
     '''
     query = (
             "SELECT " + col_name + " FROM " + table_name + " "
             "WHERE " + col_to_match + " LIKE '" + condition + "'; "
+    )
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+def check_correct_product_retrival_from_inventory(product_id, red_quan, cursor):
+    query = (
+            "SELECT I.batch_id FROM inventory I "
+            "INNER JOIN batch B "
+            "ON I.batch_id = B.batch_id "
+            "WHERE (I.product_id = " + str(product_id) + ") "
+            "AND (I.quantity <> 0) "
+            "AND (I.quantity - " + type(red_quan) + " >= 0 ) "
+            "ORDER BY B.exp_date ASC LIMIT 1; "
     )
     cursor.execute(query)
     return cursor.fetchall()
@@ -130,5 +143,7 @@ if __name__ == "__main__":
     result = retrieve_product_sales('Guck - 1 handful', '2020-09-01', '2020-09-09', c)
     print(result)
     result = retrieve_product_exp_date('Panadol - 25 pill box', c)
+    print(result)
+    result = check_correct_product_retrival_from_inventory(1, 10, c)
     print(result)
     connect.close()

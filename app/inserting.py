@@ -1,5 +1,6 @@
 import connection
 import reading
+import updating
 import re
 
 
@@ -251,7 +252,7 @@ def insert_new_sale(date, db, cursor, customer_id=1, *prod_id_qty):
     sale_id = cursor.lastrowid
     for arg in prod_id_qty:
         insert_sale_item(arg[0], arg[1], sale_id, db, cursor)
-
+        updating.update_quantity()
     return sale_id
 
 
@@ -267,8 +268,6 @@ def insert_sale_item(product_id, quantity, sale_id, db, cursor):
     db.commit()
     return cursor.lastrowid
 
-def test(*args):
-    print(type(args))
 
 if __name__ == "__main__":
     # tests
