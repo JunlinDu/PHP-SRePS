@@ -1,5 +1,5 @@
 #Import libraries
-import connection
+import connect
 
 
 #export a whole table
@@ -11,11 +11,11 @@ def export_table(table_name):
     '''
     #load headers
     headerquery = 'describe ' + table_name
-    header = [row[0] for row in connection.get_results(headerquery)]
+    header = [row[0] for row in connect.get_results(headerquery)]
 
     #load rows
     rowsquery = 'select * from ' + table_name
-    rows = connection.get_results(rowsquery)
+    rows = connect.get_results(rowsquery)
 
 
     #write to file
