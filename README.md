@@ -13,13 +13,13 @@ PHP-SRePS/
 │   │   ├── sale_items.csv
 │   │   └── sales.csv
 │   │   
-│   ├── connection.py
-│   ├── deleting.py
+│   ├── connect.py
+│   ├── delete.py
 |   ├── exportCSV.py
-│   ├── inserting.py
+│   ├── inser.py
 │   ├── main.py
-│   ├── reading.py
-│   └── updating.py
+│   ├── read.py
+│   └── update.py
 │
 ├── .gitignore
 ├── datebase.sql
