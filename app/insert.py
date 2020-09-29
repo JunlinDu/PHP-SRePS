@@ -277,9 +277,9 @@ def new_sale(date, db, cursor, customer_id=1, *prod_id_qty):
     sale_id = cursor.lastrowid
     for arg in prod_id_qty:
         sale_item(arg[0], arg[1], sale_id, db, cursor)
-        result = update.update_quantity(arg[0], arg[1], db, cursor)
+        result = update.quantity(arg[0], arg[1], db, cursor)
         if result == -1:
-            print(read.retrieve_prodname_by_id(arg[0]) + " is sold out. ")
+            print(read.prodname_by_id(arg[0]) + " is sold out. ")
     return sale_id
 
 
