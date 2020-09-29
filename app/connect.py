@@ -1,4 +1,5 @@
 import mysql.connector
+import config
 '''
 This module contains functions that connects to the local database
 
@@ -10,15 +11,8 @@ def conn():
 
     :return: a database connection
     '''
-    config = {
-        "user": "root",
-        "passwd": "password",
-        "host": "localhost",
-        "database": "PHP_SRePS"
-    }
-
     try:
-        connect = mysql.connector.connect(**config)
+        connect = mysql.connector.connect(**config.config)
         print("connected successfully")
         return connect
     except:
