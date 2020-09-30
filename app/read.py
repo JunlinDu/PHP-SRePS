@@ -22,7 +22,7 @@ def product_sales(productName, startDate, endDate, cursor):
     :return: a list.
 
     Example:
-    >>> product_sales('Guck - 1 handful', '2020-09-01', '2020-09-09')
+    >>> product_sales('Guck - 1 handful', '2020-09-01', '2020-09-09', cursor)
     [('Guck - 1 handful', Decimal('10'))]
 
     +------------------+------------+
@@ -63,7 +63,7 @@ def product_exp_date(productName, cursor):
     :return: a list.
 
     Example:
-    >>> product_exp_date('Panadol - 25 pill box')
+    >>> product_exp_date('Panadol - 25 pill box', cursor)
     [(1, 'Panadol - 25 pill box', datetime.date(2022, 9, 19))]
 
     +---------+-----------------------+------------+
@@ -129,7 +129,7 @@ def customer_purchase_item(custid, cursor):
 
 def check_value(table_name, col_name, col_to_match, condition, cursor):
     '''
-    Note: This function is less likly to be called from the front end.
+    Note: This function is less likly to be called from the UI.
     This function checks a column value in a table based on a given condition,
     is mainly used for checking the existance of certian record when performing
     updates.
@@ -177,7 +177,7 @@ def prodname_by_id(product_id, cursor):
     :return: @String | Product name
 
     Example:
-    >>> prodname_by_id(2, c)
+    >>> prodname_by_id(2, cursor)
     @:returns: "Meat - unknown origin, 200g"
     '''
 
@@ -197,7 +197,7 @@ def prodname_by_id(product_id, cursor):
 def batch_retrieval_of_oldest(product_id, red_quan, cursor):
     '''
     Note: this function mainly serves as a utility function for operations in updating
-    and is less likely to be called from the front end.
+    and is less likely to be called from UI.
 
     This function returns the batch_id from the inventory for a provided product
     where the product's quantity is more than 0, and it is greater than 0 after
