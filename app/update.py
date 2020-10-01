@@ -1,4 +1,5 @@
 import mysql.connector.cursor_cext
+import tables
 import connect
 import read
 
@@ -119,12 +120,66 @@ def manufacturer(manufacturer_name, manufacturer_id, db, cursor):
         return 0
 
 
-def product():
-    return
+# functions below are newly added update functions
+def customer(cus_id, surname, given_name, address, dob, db, cursor):
+    if validate("customer_id", cus_id, tables.TableEnum.customer, cursor):
+        query = ("UPDATE customer"
+                 + " SET customer_id = " + str(cus_id)
+                 + " SET surname = '" + surname
+                 + "' SET given_name = '" + given_name
+                 + "' SET address = '" + address
+                 + "' SET dob = '" + dob
+                 + "' WHERE customer_id = " + str(cus_id) + "; "
+                 )
+        cursor.execute()
+        db.commit()
+        return 0
+    else:
+        return -1
 
 
-def customer():
-    return
+def product(product_id, product_name, manufacturer_id, price, db, cursor):
+    if validate("product_id", product_id, tables.TableEnum.product, cursor):
+        query = ("UPDATE product"
+                 + " SET product_name = '" + str(product_name)
+                 + "' SET manufacturer_id = " + str(manufacturer_id)
+                 + " SET price = " + str(price)
+                 + " WHERE product_id = " + str(product_id)
+                 )
+        cursor.execute(query)
+        db.commit()
+        return 0
+    else:
+        return -1
+
+
+def inventory(inven_id, batch_id, product_id, quantity, db, cursor):
+    if validate("inven_id", inven_id, tables.TableEnum.inventory, cursor):
+        query = ("UPDATE product"
+                 + " SET batch_id = " + str(batch_id)
+                 + " SET product_id = " + str(product_id)
+                 + " SET quantity = " + str(quantity)
+                 + " WHERE inven_id = " + str(inven_id)
+                 )
+
+        cursor.execute(query)
+        db.commit()
+        return 0
+    else:
+        return -1
+
+
+def validate(id_name, id, table_enum, curosr):
+    curosr.execute("SELECT * FROM "
+                   + str(read.tablelist[table_enum.value])
+                   + " WHERE " + str(id_name)
+                   + " = " + str(id) + "; "
+                   )
+    alist = curosr.fetchall()
+    if len(alist) == 0:
+        return False
+    else:
+        return True
 
 
 if __name__ == "__main__":

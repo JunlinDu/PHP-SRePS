@@ -260,6 +260,27 @@ def table(table_enum, cursor):
     return cursor.fetchall()
 
 
+def product_quantity(cursor):
+    '''
+    :return:
+    [(1, 'Panadol - 25 pill box', Decimal('5.60'), Decimal('200')),
+    (2, 'Meat - unknown origin, 200g', Decimal('15.20'), Decimal('10')),
+    (3, 'Liquid - heavy, 100ml cups', Decimal('2020.05'), Decimal('10000')),
+    (4, 'Pain - heavy, 1 serving', Decimal('0.01'), Decimal('4')),
+    (5, 'Guck - 1 handful', None, Decimal('50'))]
+    '''
+
+    query = (
+        "SELECT p.Product_id, p.Product_name, p.Price, SUM(i.Quantity) AS Quantity "
+        "FROM Product p "
+        "INNER JOIN Inventory i "
+        "ON i.Product_id = p.Product_id "
+        "GROUP BY p.Product_id; "
+    )
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
 if __name__ == "__main__":
     connect = connect.conn()
     # Note: cursor must be set up this way (although the parameter 'buffered=True')
@@ -285,4 +306,6 @@ if __name__ == "__main__":
     print(result)
     for item in result:
         print(item)
+
+    print(product_quantity(c))
     connect.close()
