@@ -90,11 +90,31 @@ CREATE TABLE sales (
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
 );
 
+INSERT INTO sales (`customer_id`, `date`) VALUES ('1', '2019-09-09');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('1', '2019-09-11');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('2', '2019-12-25');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('2', '2019-12-28');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('3', '2020-01-01');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('3', '2020-02-02');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('4', '2020-03-03');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('4', '2020-04-04');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('5', '2020-05-05');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('5', '2020-06-06');
 INSERT INTO sales (`customer_id`, `date`) VALUES ('1', '2020-09-01');
 INSERT INTO sales (`customer_id`) VALUES ('2');
 INSERT INTO sales (`customer_id`, `date`) VALUES ('3', '2020-09-03');
 INSERT INTO sales (`customer_id`, `date`) VALUES ('4', '2020-09-05');
 INSERT INTO sales (`customer_id`, `date`) VALUES ('5', '2020-09-09');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('1', '2020-09-12');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('1', '2020-09-16');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('2', '2020-09-18');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('2', '2020-09-22');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('3', '2020-10-01');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('3', '2020-10-06');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('4', '2020-10-09');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('4', '2020-10-09');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('5', '2020-10-10');
+INSERT INTO sales (`customer_id`, `date`) VALUES ('5', '2020-10-11');
 
 CREATE TABLE sale_items (
     sale_item_id INT AUTO_INCREMENT UNIQUE NOT NULL,
@@ -113,3 +133,40 @@ INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('3', '3', 
 INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('4', '3', '2');
 INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('4', '4', '2');
 INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('5', '5', '10');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('6', '1', '2');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('6', '2', '1');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('7', '1', '2');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('7', '2', '1');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('8', '3', '4');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('8', '4', '3');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('9', '4', '5');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('9', '5', '4');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('10', '4', '5');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('10', '5', '4');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('11', '1', '2');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('11', '2', '1');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('12', '1', '2');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('12', '2', '1');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('13', '3', '4');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('13', '4', '3');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('14', '3', '4');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('14', '4', '3');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('16', '4', '5');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('16', '5', '4');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('17', '4', '5');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('17', '5', '4');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('18', '1', '2');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('18', '2', '1');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('19', '1', '2');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('19', '2', '1');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('20', '3', '4');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('20', '4', '3');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('21', '3', '4');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('21', '4', '3');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('22', '1', '5');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('22', '5', '1');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('23', '1', '5');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('23', '5', '1');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('24', '2', '3');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('24', '3', '2');
+INSERT INTO sale_items (`sales_id`, `product_id`, `quantity`) VALUES ('25', '2', '3');
