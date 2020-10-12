@@ -12,6 +12,23 @@ class NewSalesMenu(QMainWindow):
         loadUi('Pages/SalesWindow.ui', self)
         self.show()
 
+    def addSale(self):
+        self.AddButton.clicked.connect(self.showAddSaleDialog())
+
+    def showAddSaleDialog(self):
+        mydialog = CreateAddSaleDialog('Pages/AddSaleDialog.ui')
+        mydialog.exec()
+
+
+
+
+class CreateAddSaleDialog(QMainWindow):
+    def __init__(self, Dialoglocation):
+        super(CreateAddSaleDialog, self).__init__()
+        loadUi(Dialoglocation, self)
+        self.show()
+
+
 
 
 # init
