@@ -1,4 +1,4 @@
-import mysql.connector.cursor_cext
+
 import connect
 import re
 import tables
@@ -34,8 +34,6 @@ def product_sales(productName, startDate, endDate, cursor):
 
     assert type(productName) == str
     assert re.search("^\d{4}-\d{2}-\d{2}$", startDate) and re.search("^\d{4}-\d{2}-\d{2}$", endDate)
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
-           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
             "SELECT P.product_name AS ProductName, SUM(I.Quantity) AS TotalSales "
@@ -74,8 +72,6 @@ def product_exp_date(productName, cursor):
     '''
 
     assert type(productName) == str
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
-           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
         "SELECT I.batch_id AS BatchId, P.product_name AS ProductName, B.exp_date AS ExpDate "
@@ -109,8 +105,6 @@ def customer_purchase_item(custid, cursor):
     ('Grim', 'Dibbler', 'Meat - unknown origin, 200g', 3)]
     '''
     assert type(custid) == int
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
-           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
     query = (
         "SELECT C.Surname, C.Given_name, P.Product_name, I.Quantity "
         "FROM customer C "
@@ -157,8 +151,6 @@ def check_value(table_name, col_name, col_to_match, condition, cursor):
     assert type(table_name) == str
     assert type(col_to_match) == str
     assert type(condition) == str
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
-           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
             "SELECT " + col_name + " FROM " + table_name + " "
@@ -182,8 +174,6 @@ def prodname_by_id(product_id, cursor):
     '''
 
     assert type(product_id) == int
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
-           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
         "SELECT product_name FROM product "
@@ -214,8 +204,6 @@ def batch_retrieval_of_oldest(product_id, red_quan, cursor):
     '''
     assert type(product_id) == int
     assert type(red_quan) == int
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
-           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
             "SELECT I.batch_id FROM inventory I "
@@ -250,8 +238,6 @@ def table(table_enum, cursor):
 
     '''
     assert type(table_enum) == tables.TableEnum
-    assert type(cursor) == mysql.connector.cursor_cext.CMySQLCursorBuffered \
-           or type(cursor) == mysql.connector.cursor_cext.CMySQLCursor
 
     query = (
         "SELECT * FROM " + tablelist[table_enum.value] + "; "
