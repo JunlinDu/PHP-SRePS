@@ -30,6 +30,7 @@ class NewStockMenu(QMainWindow):
         self.CurrentView = "Product"
 
         self.BatchView.setHidden(True)
+
         # Makes column size all even
         header = self.ProductList.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
@@ -112,12 +113,14 @@ class NewStockMenu(QMainWindow):
         except:
             pass
         self.EditProductButton.clicked.connect(self.showEditProductDialog)
+
         # Edit Batch Dialog
         try:
             self.EditBatchButton.clicked.disconnect()
         except:
             pass
         self.EditBatchButton.clicked.connect(self.ShowEditBatchDialog)
+
         # Create Batch Dialog
         try:
             self.CreateBatchButton.clicked.disconnect()
@@ -188,7 +191,6 @@ class CreateInputDialog(QDialog):
         super(CreateInputDialog, self).__init__()
         loadUi(Dialoglocation, self)
         self.show()
-
 
 
 # init

@@ -779,7 +779,7 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       <string>Cancel</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="add_button">
+    <widget class="QPushButton" name="AddButton">
      <property name="geometry">
       <rect>
        <x>760</x>
