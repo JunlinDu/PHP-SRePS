@@ -10,8 +10,9 @@ class NewSalesMenu(QMainWindow):
         super(NewSalesMenu, self).__init__()
         loadUi('Pages/SalesWindow.ui', self)
         self.show()
+
         self.CurrentView = "Sale"
-        self.AddButton.clicked.connect(self.showAddSaleDialog())
+        #self.AddButton.clicked.connect(self.showAddSaleDialog())
 
     def showAddSaleDialog(self):
         dialog = CreateAddSaleDialog('Pages/AddSaleDialog.ui')
