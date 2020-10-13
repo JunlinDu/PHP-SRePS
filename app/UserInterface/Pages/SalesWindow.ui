@@ -686,7 +686,7 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       <string>Cancel</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="AddButton">
+    <widget class="QPushButton" name="NewSaleButton">
      <property name="geometry">
       <rect>
        <x>50</x>
