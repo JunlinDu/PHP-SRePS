@@ -1,7 +1,6 @@
-
-import connect
+import app.connect as connect
 import re
-import tables
+import app.tables as tables
 
 tablelist = ["customer", "manufacturer", "product", "inventory", "batch", "sales", "sale_items"]
 
@@ -43,8 +42,8 @@ def product_sales(productName, startDate, endDate, cursor):
             "INNER JOIN Sales S "
             "ON I.sales_id = S.sales_id "
             "WHERE (S.date BETWEEN '" + startDate + "' AND '" + endDate + "') "
-            "AND P.product_name LIKE '" + productName + "' "
-            "GROUP BY P.product_name"
+                                                                          "AND P.product_name LIKE '" + productName + "' "
+                                                                                                                      "GROUP BY P.product_name"
     )
     cursor.execute(query)
     return cursor.fetchall()
@@ -74,14 +73,14 @@ def product_exp_date(productName, cursor):
     assert type(productName) == str
 
     query = (
-        "SELECT I.batch_id AS BatchId, P.product_name AS ProductName, B.exp_date AS ExpDate "
-        "FROM product P "
-        "INNER JOIN inventory I "
-        "On I.product_id = P.product_id "
-        "INNER JOIN batch B "
-        "On I.batch_id = B.batch_id "
-        "WHERE P.product_name LIKE '" + productName + "' "
-        "GROUP BY I.Batch_Id ,P.product_name"
+            "SELECT I.batch_id AS BatchId, P.product_name AS ProductName, B.exp_date AS ExpDate "
+            "FROM product P "
+            "INNER JOIN inventory I "
+            "On I.product_id = P.product_id "
+            "INNER JOIN batch B "
+            "On I.batch_id = B.batch_id "
+            "WHERE P.product_name LIKE '" + productName + "' "
+                                                          "GROUP BY I.Batch_Id ,P.product_name"
     )
 
     cursor.execute(query)
@@ -106,16 +105,16 @@ def customer_purchase_item(custid, cursor):
     '''
     assert type(custid) == int
     query = (
-        "SELECT C.Surname, C.Given_name, P.Product_name, I.Quantity "
-        "FROM customer C "
-        "INNER JOIN sales S "
-        "ON C.Customer_id = S.Customer_id "
-        "INNER JOIN sale_items I "
-        "ON I.sales_id = S.sales_id "
-        "INNER JOIN product P "
-        "ON P.product_id = I.product_id "
-        "WHERE C.Customer_id = " + str(custid) + " "
-        "GROUP BY C.Surname, C.Given_name, P.Product_name, I.Quantity;"
+            "SELECT C.Surname, C.Given_name, P.Product_name, I.Quantity "
+            "FROM customer C "
+            "INNER JOIN sales S "
+            "ON C.Customer_id = S.Customer_id "
+            "INNER JOIN sale_items I "
+            "ON I.sales_id = S.sales_id "
+            "INNER JOIN product P "
+            "ON P.product_id = I.product_id "
+            "WHERE C.Customer_id = " + str(custid) + " "
+                                                     "GROUP BY C.Surname, C.Given_name, P.Product_name, I.Quantity;"
     )
     cursor.execute(query)
     return cursor.fetchall()
@@ -154,7 +153,7 @@ def check_value(table_name, col_name, col_to_match, condition, cursor):
 
     query = (
             "SELECT " + col_name + " FROM " + table_name + " "
-            "WHERE " + col_to_match + " LIKE '" + condition + "'; "
+                                                           "WHERE " + col_to_match + " LIKE '" + condition + "'; "
     )
     cursor.execute(query)
     return cursor.fetchall()
@@ -176,8 +175,8 @@ def prodname_by_id(product_id, cursor):
     assert type(product_id) == int
 
     query = (
-        "SELECT product_name FROM product "
-        "WHERE product_id = " + str(product_id) + "; "
+            "SELECT product_name FROM product "
+            "WHERE product_id = " + str(product_id) + "; "
     )
     cursor.execute(query)
     alist = cursor.fetchall()
@@ -210,9 +209,9 @@ def batch_retrieval_of_oldest(product_id, red_quan, cursor):
             "INNER JOIN batch B "
             "ON I.batch_id = B.batch_id "
             "WHERE (I.product_id = " + str(product_id) + ") "
-            "AND (I.quantity <> 0) "
-            "AND (I.quantity - " + str(red_quan) + " >= 0 ) "
-            "ORDER BY B.exp_date ASC LIMIT 1; "
+                                                         "AND (I.quantity <> 0) "
+                                                         "AND (I.quantity - " + str(red_quan) + " >= 0 ) "
+                                                                                                "ORDER BY B.exp_date ASC LIMIT 1; "
     )
     cursor.execute(query)
     return cursor.fetchall()
@@ -240,7 +239,7 @@ def table(table_enum, cursor):
     assert type(table_enum) == tables.TableEnum
 
     query = (
-        "SELECT * FROM " + tablelist[table_enum.value] + "; "
+            "SELECT * FROM " + tablelist[table_enum.value] + "; "
     )
     cursor.execute(query)
     return cursor.fetchall()
@@ -262,6 +261,45 @@ def product_quantity(cursor):
         "INNER JOIN Inventory i "
         "ON i.Product_id = p.Product_id "
         "GROUP BY p.Product_id; "
+    )
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+def sales_breakdown(startDate, endDate, cursor):
+    '''
+    Date, Product, QuantitySold, TotalSale, Profit
+    '''
+    query = (
+            "SELECT S.Date AS Date, "
+            "P.Product_Name AS Product, "
+            "SUM(SI.Quantity) AS Quantity, "
+            "ROUND((P.Price * Quantity * 1.2), 2) AS Total, "
+            "ROUND((P.Price * Quantity * 0.2), 2) AS Profit "
+            "FROM Sales S "
+            "INNER JOIN Sale_Items SI ON SI.Sales_id = S.Sales_id "
+            "INNER JOIN Product P ON P.Product_id = SI.Product_id "
+            "WHERE (S.date BETWEEN '" + startDate + "' AND '" + endDate + "') "
+            "GROUP BY Date, Product"
+    )
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+def report_elements(startDate, endDate, cursor):
+    '''
+    TotalSales, NetProfit, NumberOfSales, ProductsSold
+    '''
+    query = (
+            "SELECT "
+            "ROUND(SUM(P.Price * SI.Quantity * 1.2), 2) AS TotalSales, "
+            "ROUND(SUM(P.Price * SI.Quantity * 0.2), 2) AS NetProfit, "
+            "COUNT(S.sales_id) AS NumberOfSales, "
+            "SUM(SI.Quantity) AS ProductsSold "
+            "FROM Sales S "
+            "INNER JOIN Sale_Items SI ON SI.Sales_id = S.Sales_id "
+            "INNER JOIN Product P ON P.Product_id = SI.Product_id "
+            "WHERE (S.date BETWEEN '" + startDate + "' AND '" + endDate + "')"
     )
     cursor.execute(query)
     return cursor.fetchall()
