@@ -13,10 +13,37 @@ PHP-SRePS/
 │   │   ├── sale_items.csv
 │   │   └── sales.csv
 │   │   
+├── ├── UserInterface/
+├── ├── ├── Pages/
+│   │   │   ├── BatchDialog.ui
+│   │   │   ├── EditBatchDialog.ui
+│   │   │   ├── EditProductDialog.ui
+│   │   │   ├── MainMenu.ui
+│   │   │   ├── ProductDialog.ui
+│   │   │   ├── SalesWindow.ui
+│   │   │   └── StockWindow.ui
+│   │   │   
+│   │   ├── Resources
+│   │   │   ├── SourceImages
+│   │   │   │   ├── Bin.png
+│   │   │   │   ├── Book.png
+│   │   │   │   ├── Box.png
+│   │   │   │   ├── Dollar.png
+│   │   │   │   ├── Pencil.png
+│   │   │   │   ├── Plus.png
+│   │   │   │   └── Report.png
+│   │   │   │
+│   │   │   ├── Images.py
+│   │   │   └── Imgages.qrc
+│   │   │   
+│   │   ├── SalesMenu.py
+│   │   ├── StockMenu.py
+│   │   └── UiHandler.py
+│   │
 │   ├── connect.py
 │   ├── delete.py
 |   ├── exportCSV.py
-│   ├── inser.py
+│   ├── insert.py
 │   ├── main.py
 │   ├── read.py
 │   └── update.py
@@ -24,4 +51,5 @@ PHP-SRePS/
 ├── .gitignore
 ├── datebase.sql
 └── README.md
+
 ```
