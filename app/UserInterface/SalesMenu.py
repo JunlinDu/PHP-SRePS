@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
 from PyQt5.uic import loadUi
 
 
-
 class NewSalesMenu(QMainWindow):
     def __init__(self):
         super(NewSalesMenu, self).__init__()
@@ -14,14 +13,9 @@ class NewSalesMenu(QMainWindow):
         self.CurrentView = "Sale"
         self.AddButton.clicked.connect(self.showAddSaleDialog())
 
-    def CreateSale(self, dialog):
-        print(dialog)
-
     def showAddSaleDialog(self):
         dialog = CreateAddSaleDialog('Pages/AddSaleDialog.ui')
-        dialog.buttonBox.accepted.connect(lambda: self.CreateSale("a"))
         dialog.exec()
-
 
 
 class CreateAddSaleDialog(QDialog):
