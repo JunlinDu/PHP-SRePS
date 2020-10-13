@@ -1,6 +1,6 @@
-import app.connect as connect
+import connect
 import re
-import app.tables as tables
+import tables
 
 tablelist = ["customer", "manufacturer", "product", "inventory", "batch", "sales", "sale_items"]
 

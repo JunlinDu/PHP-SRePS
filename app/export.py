@@ -1,6 +1,6 @@
 #Import libraries
-import app.connect as connect
-import app.read as read
+import connect
+import read
 
 
 #export a whole table
