@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem, QDialog
 from PyQt5.uic import loadUi
 from UserInterface import SaleDialog
+from datetime import datetime
 import read
 import tables
 import connect
@@ -38,13 +39,28 @@ class NewSalesMenu(QMainWindow):
 
         self.CurrentView = "Sale"
 
+        header = self.SaleList.horizontalHeader()
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
+
         # Opens a Dialog
         self.NewSaleButton.clicked.connect(lambda: self.showAddSaleDialog())
+        self.DateText.setText(datetime.today().strftime('%d/%m/%Y'))
+
+
+    def test(self):
+        print("Aaaaa")
+
 
     def showAddSaleDialog(self):
         dialog = SaleDialog.CreateSaleDialog('Pages/AddSaleDialog.ui', self.productTable)
         dialog.exec_()
-        print(dialog.producttuple)
+        #TODO CHECK NOT NULL
+        # TODO dialog.buttonBox.accepted.connect
+        self.saleItems[dialog.producttuple[0]] = dialog.producttuple[1]
+        #print(self.saleItems)
 
 
 

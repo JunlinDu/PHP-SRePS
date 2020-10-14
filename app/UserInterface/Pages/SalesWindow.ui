@@ -764,7 +764,7 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QTableWidget" name="tableWidget">
+    <widget class="QTableWidget" name="SaleList">
      <property name="geometry">
       <rect>
        <x>50</x>
@@ -927,13 +927,26 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       <string notr="true">border: 0px;</string>
      </property>
      <property name="text">
-      <string>date text</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="EditDate">
+     <property name="geometry">
+      <rect>
+       <x>900</x>
+       <y>10</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Edit Date</string>
      </property>
     </widget>
    </widget>
