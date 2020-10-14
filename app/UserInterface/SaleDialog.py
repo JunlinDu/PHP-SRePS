@@ -21,21 +21,33 @@ class CreateSaleDialog(QDialog):
         self.buttonBox.accepted.connect(self.accept)
         self.accepted.connect(lambda : self.passData())
 
-
-
     def getName(self):
         content = self.ProductID.text()
-        if content.isnumeric():
-            if int(content) > len(self.ProductTable) or int(content) < 1:
-                self.ProductNameText.setText("Please enter a valid number")
-            else:
-                self.ProductNameText.setText(self.ProductTable.get(int(content)))
-        else:
-            self.ProductNameText.setText("Please enter a number")
+        if self.verifyIntegrity(content):
+            self.ProductNameText.setText(self.ProductTable.get(int(content)))
 
     def passData(self):
-        self.producttuple = (int(self.ProductID.text()), int(self.Quantity.text()))
-        return
+        pId = self.ProductID.text()
+        pQuan = self.Quantity.text()
+        if self.verifyIntegrity(pId, pQuan):
+            self.producttuple = (int(pId), int(pQuan))
+
+
+    def verifyIntegrity(self, *args):
+        for num in args:
+            if not num.isnumeric():
+                self.showErrorMsg()
+                return False
+            if int(num) < 1:
+                self.showErrorMsg()
+                return False
+            if int(num) > len(self.ProductTable):
+                self.showErrorMsg()
+                return False
+        return True
+
+    def showErrorMsg(self):
+        self.ProductNameText.setText("Please enter a valid number")
 
 
 if __name__ == "__main__":
