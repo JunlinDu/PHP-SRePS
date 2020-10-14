@@ -30,7 +30,9 @@ class NewSalesMenu(QMainWindow):
 
     def showAddSaleDialog(self):
         dialog = SaleDialog.CreateSaleDialog('Pages/AddSaleDialog.ui', self.productTable)
-        dialog.exec()
+        dialog.exec_()
+        print(dialog.producttuple)
+
 
 
 # init
