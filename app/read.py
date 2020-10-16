@@ -42,8 +42,8 @@ def product_sales(productName, startDate, endDate, cursor):
             "INNER JOIN Sales S "
             "ON I.sales_id = S.sales_id "
             "WHERE (S.date BETWEEN '" + startDate + "' AND '" + endDate + "') "
-                                                                          "AND P.product_name LIKE '" + productName + "' "
-                                                                                                                      "GROUP BY P.product_name"
+            "AND P.product_name LIKE '" + productName + "' "
+            "GROUP BY P.product_name"
     )
     cursor.execute(query)
     return cursor.fetchall()
@@ -80,7 +80,7 @@ def product_exp_date(productName, cursor):
             "INNER JOIN batch B "
             "On I.batch_id = B.batch_id "
             "WHERE P.product_name LIKE '" + productName + "' "
-                                                          "GROUP BY I.Batch_Id ,P.product_name"
+            "GROUP BY I.Batch_Id ,P.product_name"
     )
 
     cursor.execute(query)
@@ -114,7 +114,7 @@ def customer_purchase_item(custid, cursor):
             "INNER JOIN product P "
             "ON P.product_id = I.product_id "
             "WHERE C.Customer_id = " + str(custid) + " "
-                                                     "GROUP BY C.Surname, C.Given_name, P.Product_name, I.Quantity;"
+            "GROUP BY C.Surname, C.Given_name, P.Product_name, I.Quantity;"
     )
     cursor.execute(query)
     return cursor.fetchall()
@@ -153,7 +153,7 @@ def check_value(table_name, col_name, col_to_match, condition, cursor):
 
     query = (
             "SELECT " + col_name + " FROM " + table_name + " "
-                                                           "WHERE " + col_to_match + " LIKE '" + condition + "'; "
+            "WHERE " + col_to_match + " LIKE '" + condition + "'; "
     )
     cursor.execute(query)
     return cursor.fetchall()
@@ -209,9 +209,9 @@ def batch_retrieval_of_oldest(product_id, red_quan, cursor):
             "INNER JOIN batch B "
             "ON I.batch_id = B.batch_id "
             "WHERE (I.product_id = " + str(product_id) + ") "
-                                                         "AND (I.quantity <> 0) "
-                                                         "AND (I.quantity - " + str(red_quan) + " >= 0 ) "
-                                                                                                "ORDER BY B.exp_date ASC LIMIT 1; "
+            "AND (I.quantity <> 0) "
+            "AND (I.quantity - " + str(red_quan) + " >= 0 ) "
+            "ORDER BY B.exp_date ASC LIMIT 1; "
     )
     cursor.execute(query)
     return cursor.fetchall()
@@ -256,11 +256,11 @@ def product_quantity(cursor):
     '''
 
     query = (
-        "SELECT p.Product_id, p.Product_name, p.Price, SUM(i.Quantity) AS Quantity "
-        "FROM Product p "
-        "INNER JOIN Inventory i "
-        "ON i.Product_id = p.Product_id "
-        "GROUP BY p.Product_id; "
+            "SELECT p.Product_id, p.Product_name, p.Price, SUM(i.Quantity) AS Quantity "
+            "FROM Product p "
+            "INNER JOIN Inventory i "
+            "ON i.Product_id = p.Product_id "
+            "GROUP BY p.Product_id; "
     )
     cursor.execute(query)
     return cursor.fetchall()
