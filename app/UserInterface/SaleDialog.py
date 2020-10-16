@@ -9,7 +9,6 @@ import connect
 
 
 class CreateSaleDialog(QDialog):
-
     producttuple = ()
 
     def __init__(self, Dialoglocation, ProductTable):
@@ -17,33 +16,40 @@ class CreateSaleDialog(QDialog):
         loadUi(Dialoglocation, self)
         self.ProductTable = ProductTable
         self.show()
-        self.CheckName.clicked.connect(lambda : self.getName())
+        self.CheckName.clicked.connect(lambda: self.getName())
         self.buttonBox.accepted.connect(self.accept)
-        self.accepted.connect(lambda : self.passData())
+        self.buttonBox.rejected.connect(self.reject)
+        self.accepted.connect(lambda: self.passData())
 
     def getName(self):
         content = self.ProductID.text()
         if self.verifyIntegrity(content):
-            self.ProductNameText.setText(self.ProductTable.get(int(content)))
+            self.ProductNameText.setText(self.ProductTable.get(int(content))[0])
+            print(self.ProductTable.get(int(content))[0])
 
     def passData(self):
         pId = self.ProductID.text()
         pQuan = self.Quantity.text()
+
         if self.verifyIntegrity(pId, pQuan):
             self.producttuple = (int(pId), int(pQuan))
-
+        else:
+            self.producttuple = (0, 0)
 
     def verifyIntegrity(self, *args):
         for num in args:
+            if num == "":
+                self.showErrorMsg()
+                return False
             if not num.isnumeric():
                 self.showErrorMsg()
                 return False
             if int(num) < 1:
                 self.showErrorMsg()
                 return False
-            if int(num) > len(self.ProductTable):
-                self.showErrorMsg()
-                return False
+        if int(args[0]) > len(self.ProductTable):
+            self.showErrorMsg()
+            return False
         return True
 
     def showErrorMsg(self):
