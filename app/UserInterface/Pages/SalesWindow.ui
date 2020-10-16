@@ -839,7 +839,7 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       <rect>
        <x>820</x>
        <y>630</y>
-       <width>101</width>
+       <width>181</width>
        <height>41</height>
       </rect>
      </property>
@@ -857,7 +857,7 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       <rect>
        <x>820</x>
        <y>710</y>
-       <width>101</width>
+       <width>181</width>
        <height>41</height>
       </rect>
      </property>
@@ -939,14 +939,27 @@ image: url(:/icons/SourceImages/Bin.png);</string>
     <widget class="QPushButton" name="EditDate">
      <property name="geometry">
       <rect>
-       <x>900</x>
-       <y>10</y>
+       <x>920</x>
+       <y>0</y>
        <width>75</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
       <string>Edit Date</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="RefreshDate">
+     <property name="geometry">
+      <rect>
+       <x>920</x>
+       <y>30</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Refresh Date</string>
      </property>
     </widget>
    </widget>
