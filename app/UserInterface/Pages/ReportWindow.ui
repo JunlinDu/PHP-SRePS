@@ -790,15 +790,30 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QComboBox" name="dateComboBox">
+    <widget class="QComboBox" name="yearComboBox">
      <property name="geometry">
       <rect>
-       <x>670</x>
+       <x>810</x>
        <y>30</y>
-       <width>271</width>
+       <width>131</width>
        <height>41</height>
       </rect>
      </property>
+     <item>
+      <property name="text">
+       <string>2019</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>2020</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ALL DATA</string>
+      </property>
+     </item>
     </widget>
     <widget class="QLabel" name="ProductIDText_9">
      <property name="geometry">
@@ -866,6 +881,81 @@ image: url(:/icons/SourceImages/Bin.png);</string>
      <property name="wordWrap">
       <bool>true</bool>
      </property>
+    </widget>
+    <widget class="QComboBox" name="monthComboBox">
+     <property name="geometry">
+      <rect>
+       <x>670</x>
+       <y>30</y>
+       <width>131</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>Any</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>January</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>February</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>March</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>April</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>May</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>June</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>July</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>August</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>September</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>October</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>November</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>December</string>
+      </property>
+     </item>
     </widget>
    </widget>
    <widget class="QTableWidget" name="BreakdownList">
