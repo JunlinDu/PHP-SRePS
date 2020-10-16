@@ -36,7 +36,7 @@ def result(result):
         :param result: results
     '''
     # write to file
-    f = open('CSVs/result.csv', 'w')
+    f = open('result.csv', 'w')
     for row in result:
         f.write('\"' + '\",\"'.join(str(r) for r in row) + '\"\n')
 
@@ -44,15 +44,16 @@ def result(result):
     f.close()
     print(print(str(len(result)) + ' rows written successfully to ' + f.name))
 
-table('batch')
-table('customer')
-table('inventory')
-table('manufacturer')
-table('product')
-table('sale_items')
-table('sales')
+if __name__ == "__main__":
+    table('batch')
+    table('customer')
+    table('inventory')
+    table('manufacturer')
+    table('product')
+    table('sale_items')
+    table('sales')
 
-connection = connect.conn()
-cursor = connection.cursor()
+    connection = connect.conn()
+    cursor = connection.cursor()
 
-result(read.sales_breakdown("2020-01-01", "2020-12-31", cursor))
+    result(read.sales_breakdown("2020-01-01", "2020-12-31", cursor))
