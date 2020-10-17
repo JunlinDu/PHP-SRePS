@@ -321,7 +321,7 @@ if __name__ == "__main__":
     # result = prodname_by_id(2, c)
     # print(result)
     # print("\n")
-    result = table(tables.TableEnum.product, c)
+    result = table(tables.TableEnum.customer, c)
     print(result)
     for item in result:
         print(item)

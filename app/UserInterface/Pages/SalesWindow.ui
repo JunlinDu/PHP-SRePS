@@ -522,31 +522,6 @@ image: url(:/icons/SourceImages/Bin.png);</string>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QPushButton" name="EditSalesItem">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>560</y>
-       <width>41</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Sans Serif</family>
-       <pointsize>15</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(200, 200, 200);
-image: url(:/icons/SourceImages/pencil.png);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
     <widget class="QPushButton" name="Submit">
      <property name="geometry">
       <rect>
@@ -582,18 +557,17 @@ image: url(:/icons/SourceImages/pencil.png);</string>
      </property>
      <property name="font">
       <font>
-       <family>MS Sans Serif</family>
-       <pointsize>15</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
+       <family>Rockwell</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(200, 200, 200);
-image: url(:/icons/SourceImages/Bin.png);</string>
+      <string notr="true">background-color: rgb(200, 200, 200);</string>
      </property>
      <property name="text">
-      <string/>
+      <string>Delete</string>
      </property>
     </widget>
     <widget class="QLabel" name="ManufacturerText_4">
@@ -620,7 +594,7 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       <string notr="true">border: 0px;</string>
      </property>
      <property name="text">
-      <string>Grand Total</string>
+      <string>Grand Total:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -716,26 +690,11 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QTextEdit" name="CustomerIdText">
-     <property name="geometry">
-      <rect>
-       <x>820</x>
-       <y>60</y>
-       <width>180</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>11</pointsize>
-      </font>
-     </property>
-    </widget>
     <widget class="QLabel" name="ManufacturerText_6">
      <property name="geometry">
       <rect>
        <x>670</x>
-       <y>60</y>
+       <y>70</y>
        <width>121</width>
        <height>41</height>
       </rect>
@@ -837,7 +796,7 @@ image: url(:/icons/SourceImages/Bin.png);</string>
     <widget class="QLabel" name="GrandTotalText">
      <property name="geometry">
       <rect>
-       <x>820</x>
+       <x>810</x>
        <y>630</y>
        <width>181</width>
        <height>41</height>
@@ -849,13 +808,13 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       </font>
      </property>
      <property name="text">
-      <string>$ 0</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="NetProfitText">
      <property name="geometry">
       <rect>
-       <x>820</x>
+       <x>810</x>
        <y>710</y>
        <width>181</width>
        <height>41</height>
@@ -867,7 +826,7 @@ image: url(:/icons/SourceImages/Bin.png);</string>
       </font>
      </property>
      <property name="text">
-      <string>$ 0</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="Date">
@@ -940,26 +899,96 @@ image: url(:/icons/SourceImages/Bin.png);</string>
      <property name="geometry">
       <rect>
        <x>920</x>
-       <y>0</y>
+       <y>10</y>
        <width>75</width>
        <height>23</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(216, 216, 216)</string>
      </property>
      <property name="text">
       <string>Edit Date</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="RefreshDate">
+    <widget class="QPushButton" name="EditSalesItem">
      <property name="geometry">
       <rect>
-       <x>920</x>
-       <y>30</y>
-       <width>75</width>
-       <height>23</height>
+       <x>0</x>
+       <y>550</y>
+       <width>41</width>
+       <height>41</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Rockwell</family>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(216, 216, 216);</string>
+     </property>
      <property name="text">
-      <string>Refresh Date</string>
+      <string>Edit</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="CusIdEdit">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>70</y>
+       <width>111</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QLabel" name="NetProfitText_2">
+     <property name="geometry">
+      <rect>
+       <x>780</x>
+       <y>710</y>
+       <width>31</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>28</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>$</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="NetProfitText_3">
+     <property name="geometry">
+      <rect>
+       <x>780</x>
+       <y>630</y>
+       <width>31</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>28</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>$</string>
      </property>
     </widget>
    </widget>
