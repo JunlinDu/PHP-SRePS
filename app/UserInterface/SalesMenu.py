@@ -133,6 +133,9 @@ class NewSalesMenu(QMainWindow):
         dialog = MessageDialog(message)
         dialog.exec_()
 
+    def showSummaryDialog(self):
+        return
+
 
 class Summary(QDialog):
 
