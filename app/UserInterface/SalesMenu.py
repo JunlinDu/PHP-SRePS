@@ -1,6 +1,7 @@
 import sys
 
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem, QDialog
 from PyQt5.uic import loadUi
 from UserInterface import SaleDialog
@@ -8,7 +9,7 @@ from datetime import datetime
 import read
 import tables
 import connect
-from UserInterface.SaleDateDialog import EditDateDialog
+import insert
 
 connector = connect.conn()
 c = connector.cursor()
@@ -26,18 +27,17 @@ class NewSalesMenu(QMainWindow):
     # It will be added, modified or emptied
     saleItems = {}
 
-    # This hash table holds key-value pairs of product Id
-    # and corresponding name. Used for searching for product
-    # name
+    # This hash table holds key-value pairs of product
+    # Id and corresponding name. Used for searching for
+    # product name
     productTable = {}
 
+    # Customer table, used to verify that the given
+    # customer Id correspond to a registered customer
     customerTable = {}
 
-    total = 0
-
-    dateFormated = datetime.today().strftime('%Y-%m-%d')
-
-    customerId = -1
+    # aggregated total price
+    total = 0.0
 
     def __init__(self):
         super(NewSalesMenu, self).__init__()
@@ -46,7 +46,7 @@ class NewSalesMenu(QMainWindow):
         self.CurrentView = "Sale"
 
         self.initiateTables()
-        self.setDate(datetime.today().strftime('%d/%m/%Y'))
+        self.setDate(datetime.today())
 
         header = self.SaleList.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
@@ -56,7 +56,6 @@ class NewSalesMenu(QMainWindow):
 
         self.Submit.clicked.connect(lambda: self.submit())
         self.Cancel.clicked.connect(lambda: self.initialize())
-        self.EditDate.clicked.connect(lambda: self.showEditDateDialog())
 
         # Opens a Dialog
         self.NewSaleButton.clicked.connect(lambda: self.showAddSaleDialog())
@@ -65,11 +64,11 @@ class NewSalesMenu(QMainWindow):
         # initiates the productTable table.
         for x in productList:
             self.productTable[x[0]] = [x[1], x[3]]
-
+        # initiates the customerTable table.
         for c in customerList:
             self.customerTable[c[0]] = (c[1] + " " + c[2])
         # print(self.productTable)
-        print(self.customerTable)
+        # print(self.customerTable)
 
     def setSaleItems(self, dialog):
         if dialog.producttuple != (0, 0):
@@ -81,10 +80,9 @@ class NewSalesMenu(QMainWindow):
             self.setColumns()
 
     def setDate(self, date):
-        if date is not None:
-            self.DateText.setText(date)
-            self.dateFormated = datetime.strptime(date, '%d/%m/%Y').strftime('%Y-%m-%d')
-        # print(datetime.today().strftime('%Y-%m-%d'))
+        d = QDate(date.year, date.month, date.day)
+        self.dateEdit.setDate(d)
+        # print(type(self.dateEdit.date().day()))
 
     def setColumns(self):
         self.SaleList.setRowCount(len(self.saleItems))
@@ -104,47 +102,88 @@ class NewSalesMenu(QMainWindow):
     def initialize(self):
         self.saleItems = {}
         self.total = 0
-        self.setDate(datetime.today().strftime('%d/%m/%Y'))
+        self.setDate(datetime.today())
         self.GrandTotalText.setText("0")
         self.NetProfitText.setText("0")
-        self.customerId = -1
         self.SaleList.clear()
         self.SaleList.setRowCount(0)
         self.SaleList.setHorizontalHeaderLabels(['Quantity', 'Product Name', 'Quantity', 'Sub Total'])
 
     def submit(self):
-        self.showMessageDialog("Test Message")
-        return
+        date = self.dateEdit.date()
+        customerId = self.lineEditId.text()
+        total = self.GrandTotalText.text()
+        if not self.verifyCustomerId(customerId):
+            return
+        if len(self.saleItems) == 0:
+            self.showMessageDialog("Sales List is Empty, Please Enter Items Before Proceed")
+        self.showSummaryDialog(date, customerId,
+                               self.customerTable[int(customerId)],
+                               total, self.saleItems, self.productTable)
 
-    def verifyData(self):
-        return
+
+    def verifyCustomerId(self, id):
+        content = self.lineEditId.text()
+        if content == "" or not content.isnumeric():
+            self.showMessageDialog("Please Enter a Valid Numeric Customer ID")
+            return False
+        elif self.customerTable[int(content)] is None:
+            self.showMessageDialog("The ID Entered Has no Corresponding Entry in the Database")
+            return False
+        return True
 
     def showAddSaleDialog(self):
         dialog = SaleDialog.CreateSaleDialog('Pages/AddSaleDialog.ui', self.productTable)
         dialog.buttonBox.accepted.connect(lambda: self.setSaleItems(dialog))
         dialog.exec_()
 
-    def showEditDateDialog(self):
-        dialog = EditDateDialog('Pages/EditDate.ui')
-        dialog.buttonBox.accepted.connect(lambda: self.setDate(dialog.date))
-        dialog.exec_()
-
     def showMessageDialog(self, message):
         dialog = MessageDialog(message)
         dialog.exec_()
 
+    def showSummaryDialog(self, date, customerId, name, total, saleItemsTable, productsTable):
+        dialog = Summary(date, customerId, name, total, saleItemsTable, productsTable)
+        dialog.buttonBox.accepted.connect(lambda: self.initialize())
+        dialog.exec_()
 
 class Summary(QDialog):
 
-    def __init__(self, Dialoglocation):
+    def __init__(self, date, customerId, name, total, saleItemsTable, productsTable):
         super(Summary, self).__init__()
-        loadUi(Dialoglocation, self)
+        loadUi('Pages/SummaryDialog.ui', self)
+        self.date = str(date.year()) + "-" + str(date.month()) + "-" + str(date.day())
+        self.customerId = customerId
+        self.name = name
+        self.total = total
+        self.saleItems = saleItemsTable
+        self.productsTable = productsTable
+        self.setSaleList()
+        self.Id.setText(str(self.customerId))
+        self.Name.setText(self.name)
+        self.Date.setText(datetime.strptime(self.date, '%Y-%m-%d').strftime('%m/%d/%Y'))
+        self.Total.setText(str(total))
+
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
         self.accepted.connect(lambda: self.execute())
 
     def execute(self):
+        # saleItems table look like this: {{2:2}, {3:1}, {4:5}, ... }
+        # where the key is product id and value is the associated quantity
+        arr = []
+        for PId in self.saleItems:
+            arr.append((PId, self.saleItems[PId]))
+
+        insert.new_sale(self.date, connector, c, self.customerId, #varargs here :()
         return
+
+    def setSaleList(self):
+        self.SaleList.setRowCount(len(self.saleItems))
+        r = 0
+        for PId in self.saleItems:
+            self.SaleList.setItem(r, 0, QTableWidgetItem(self.productsTable[PId][0]))
+            self.SaleList.setItem(r, 1, QTableWidgetItem(str(self.saleItems[PId])))
+            r += 1
 
 
 class MessageDialog(QDialog):
