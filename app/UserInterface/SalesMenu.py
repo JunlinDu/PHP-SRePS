@@ -26,17 +26,22 @@ class NewSalesMenu(QMainWindow):
     # It will be added, modified or emptied
     saleItems = {}
 
-    # This hash table holds key-value pairs of product Id
-    # and corresponding name. Used for searching for product
-    # name
+    # This hash table holds key-value pairs of product
+    # Id and corresponding name. Used for searching for
+    # product name
     productTable = {}
 
+    # Customer table, used to verify that the given
+    # customer Id correspond to a registered customer
     customerTable = {}
 
-    total = 0
+    # aggregated total price
+    total = 0.0
 
+    # Formatted date to be passed to the database
     dateFormated = datetime.today().strftime('%Y-%m-%d')
 
+    # customer Id of current sale, -1 means unset
     customerId = -1
 
     def __init__(self):
@@ -65,7 +70,7 @@ class NewSalesMenu(QMainWindow):
         # initiates the productTable table.
         for x in productList:
             self.productTable[x[0]] = [x[1], x[3]]
-
+        # initiates the customerTable table.
         for c in customerList:
             self.customerTable[c[0]] = (c[1] + " " + c[2])
         # print(self.productTable)
