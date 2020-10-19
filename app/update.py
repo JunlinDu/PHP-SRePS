@@ -59,7 +59,6 @@ def quantity(product_id, red_quan, db, cursor):
                                                                "WHERE batch_id = " + str(alist[0][0]) + "; "
         )
         cursor.execute(query)
-        db.commit()
         return 0
 
 
