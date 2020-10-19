@@ -163,19 +163,17 @@ class Summary(QDialog):
         self.Date.setText(datetime.strptime(self.date, '%Y-%m-%d').strftime('%m/%d/%Y'))
         self.Total.setText(str(total))
 
-        self.buttonBox.accepted.connect(self.accept)
-        self.buttonBox.rejected.connect(self.reject)
+        # self.buttonBox.accepted.connect(self.accept)
         self.accepted.connect(lambda: self.execute())
 
     def execute(self):
-        # saleItems table look like this: {{2:2}, {3:1}, {4:5}, ... }
-        # where the key is product id and value is the associated quantity
         arr = []
         for PId in self.saleItems:
             arr.append((PId, self.saleItems[PId]))
-
-        insert.new_sale(self.date, connector, c, self.customerId, #varargs here :()
-        return
+        print(arr)
+        id = insert.new_sale(self.date, connector, c, int(self.customerId), [(1,2)])
+        print(id)
+        self.close()
 
     def setSaleList(self):
         self.SaleList.setRowCount(len(self.saleItems))

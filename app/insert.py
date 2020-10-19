@@ -218,7 +218,7 @@ def customer(surname, given_name, address, dob, db, cursor):
     return cursor.lastrowid
 
 
-def new_sale(date, db, cursor, customer_id=1, prod_id_qty=[]):
+def new_sale(date, db, cursor, customer_id=1, prod_id_qty=None):
     '''
     This function adds a sales record.
     This function modifies two tables: sales table and sale_items table
@@ -245,21 +245,20 @@ def new_sale(date, db, cursor, customer_id=1, prod_id_qty=[]):
     assert type(date) == str
     assert type(customer_id) == int
     assert re.search("^\d{4}-\d{2}-\d{2}$", date)
-    for arg in prod_id_qty:
-        assert type(arg) == tuple
 
     query = (
         "INSERT INTO sales (`customer_id`, `date`) "
         "VALUES ('" + str(customer_id) + "', '" + date + "'); "
     )
     cursor.execute(query)
-    db.commit()
     sale_id = cursor.lastrowid
     for arg in prod_id_qty:
         sale_item(arg[0], arg[1], sale_id, db, cursor)
         result = update.quantity(arg[0], arg[1], db, cursor)
         if result == -1:
-            print(read.prodname_by_id(arg[0]) + " is sold out. ")
+            db.rollback()
+            return read.prodname_by_id(arg[0], cursor) + " is sold out. "
+    db.commit()
     return sale_id
 
 
@@ -273,7 +272,6 @@ def sale_item(product_id, quantity, sale_id, db, cursor):
         "VALUES ('" + str(sale_id) + "', '" + str(product_id) + "', '" + str(quantity) + "'); "
     )
     cursor.execute(query)
-    db.commit()
     return cursor.lastrowid
 
 
@@ -283,5 +281,5 @@ if __name__ == "__main__":
     # Note: cursor must be set up this way (although the parameter 'buffered=True')
     # can be omitted. Otherwise 'weakly-referenced object no longer exists' error will occur
     mycursor = connect.cursor(buffered=True)
-    print(new_sale("2020-09-22", connect, mycursor, 2, [(1, 2), (2, 2), (3, 10)]))
+    print(new_sale("2020-09-22", connect, mycursor, 2, [(1, 5), (3, 10)]))
     connect.close()

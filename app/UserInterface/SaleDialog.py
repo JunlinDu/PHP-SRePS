@@ -17,8 +17,6 @@ class CreateSaleDialog(QDialog):
         self.ProductTable = ProductTable
         self.show()
         self.CheckName.clicked.connect(lambda: self.getName())
-        self.buttonBox.accepted.connect(self.accept)
-        self.buttonBox.rejected.connect(self.reject)
         self.accepted.connect(lambda: self.passData())
 
     def getName(self):
