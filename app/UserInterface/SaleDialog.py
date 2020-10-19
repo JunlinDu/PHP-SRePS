@@ -11,9 +11,12 @@ import connect
 class CreateSaleDialog(QDialog):
     producttuple = ()
 
-    def __init__(self, Dialoglocation, ProductTable):
+    def __init__(self, Dialoglocation, ProductTable, prodId, prodQuantity):
         super(CreateSaleDialog, self).__init__()
         loadUi(Dialoglocation, self)
+        if prodId is not None and prodQuantity is not None:
+            self.ProductID.setText(prodId)
+        self.Quantity.setText(prodQuantity)
         self.ProductTable = ProductTable
         self.show()
         self.CheckName.clicked.connect(lambda: self.getName())
@@ -63,5 +66,5 @@ if __name__ == "__main__":
     for x in productList:
         productTable[x[0]] = x[1]
     print(productTable)
-    window = CreateSaleDialog('Pages/AddSaleDialog.ui', productTable)
+    window = CreateSaleDialog('Pages/AddSaleDialog.ui', productTable, None, None)
     sys.exit(app.exec_())
