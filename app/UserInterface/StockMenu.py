@@ -6,6 +6,9 @@ from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QIntValidator, QRegExpValidator
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem, QDialog
 from PyQt5.uic import loadUi
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
 #Imports all the Database scripts
 import read
@@ -29,7 +32,7 @@ class NewStockMenu(QMainWindow):
         # Variables
         self.CurrentView = "Product"
 
-        self.BatchView.setHidden(True)
+        #self.BatchView.setHidden(True)
 
         # Makes column size all even
         header = self.ProductList.horizontalHeader()
@@ -37,7 +40,7 @@ class NewStockMenu(QMainWindow):
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
-        header = self.BatchList.horizontalHeader()
+        #header = self.BatchList.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
@@ -46,9 +49,14 @@ class NewStockMenu(QMainWindow):
 
         self.GenerateProducts()
 
-        self.SwitchListButton.clicked.connect(self.SwitchList)
-        self.BatchBackButton.clicked.connect(self.SwitchList)
+        #self.SwitchListButton.clicked.connect(self.SwitchList)
+        #self.BatchBackButton.clicked.connect(self.SwitchList)
         self.CreateProductButton.clicked.connect(self.ShowCreateProductDialog)
+        self.CreateProductButton_2.clicked.connect(self.ShowManageProductDialog)
+        self.CreateProductButton_3.clicked.connect(self.ShowmanufacterDialog)
+        self.SwitchListButton.clicked.connect(self.ShowRestoredialog)
+
+
 
     def SwitchList(self):
         row = self.ProductList.currentRow()
@@ -147,10 +155,30 @@ class NewStockMenu(QMainWindow):
     def EditBatch(self, Dialog):
         print(Dialog.ProductID.text())
 
+    def ShowManageProductDialog(self):
+        mydialog = CreateInputDialog('Pages/ManageProductDialog.ui')
+        mydialog.exec()
+        #dialog = QDialog();
+        #btn = QPushButton("EditProductButton",dialog)
+        #btn.EditProductButton.clicked.connect(self.showEditProductDialog)
+
+
+
+        #self.EditProductButton.clicked.connect(self.showEditProductDialog)
+
+
+
+    def ShowmanufacterDialog(self):
+        mydialog = CreateInputDialog('Pages/ManufacturerDialog.ui')
+        mydialog.exec()
+
+    def ShowRestoredialog(self):
+        mydialog = CreateInputDialog('Pages/RestoreDialog.ui')
+        mydialog.exec()
 
     def showEditProductDialog(self):
         mydialog = CreateInputDialog('Pages/EditProductDialog.ui')
-        mydialog.buttonBox.accepted.connect(lambda: self.EditProduct(mydialog))
+        #mydialog.buttonBox.accepted.connect(lambda: self.EditProduct(mydialog))
         mydialog.exec()
 
     def ShowCreateProductDialog(self):
