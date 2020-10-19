@@ -218,7 +218,7 @@ def customer(surname, given_name, address, dob, db, cursor):
     return cursor.lastrowid
 
 
-def new_sale(date, db, cursor, customer_id=1, *prod_id_qty):
+def new_sale(date, db, cursor, customer_id=1, prod_id_qty=[]):
     '''
     This function adds a sales record.
     This function modifies two tables: sales table and sale_items table
@@ -238,7 +238,7 @@ def new_sale(date, db, cursor, customer_id=1, *prod_id_qty):
     :return: sale_id
 
     Example:
-    >>> new_sale("2020-09-10", connect, mycursor, 2, (1, 2), (2, 2), (3, 10))
+    >>> new_sale("2020-09-10", connect, mycursor, 2, [(1, 2), (2, 2), (3, 10)])
     Please run this fucntion in if __name__ == "__main__" and observe the changes of
     your local database.
     '''
@@ -283,5 +283,5 @@ if __name__ == "__main__":
     # Note: cursor must be set up this way (although the parameter 'buffered=True')
     # can be omitted. Otherwise 'weakly-referenced object no longer exists' error will occur
     mycursor = connect.cursor(buffered=True)
-    print(new_sale("2020-09-22", connect, mycursor, 2, (1, 2), (2, 2), (3, 10)))
+    print(new_sale("2020-09-22", connect, mycursor, 2, [(1, 2), (2, 2), (3, 10)]))
     connect.close()
