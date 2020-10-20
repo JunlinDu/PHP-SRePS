@@ -18,17 +18,19 @@ import insert
 
 
 
-class NewStockDialog(QMainWindow):
+class ManageProductDialog(QDialog):
     def __init__(self):
-        super(NewStockDialog, self).__init__()
+        super(ManageProductDialog, self).__init__()
         loadUi('Pages/ManageProductDialog.ui', self)
         self.show()
-        header = self.ProductList.horizontalHeader()
-        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
-        header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
-        self.GenerateProducts()
+
+        #
+        # header = self.ProductList.horizontalHeader()
+        # header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        # header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        # header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
+        # self.GenerateProducts()
         self.EditProductButton.clicked.connect(self.ShowProductDialog)
 
 
@@ -37,14 +39,17 @@ class NewStockDialog(QMainWindow):
         mydialog.buttonBox.accepted.connect(lambda: self.EditProduct(mydialog))
         mydialog.exec()
 
-class CreateInputDialog1():
+class CreateInputDialog1(QDialog):
     def __init__(self, Dialoglocation):
             super(CreateInputDialog1, self).__init__()
             loadUi(Dialoglocation, self)
             self.show()
 
-        # init
-    if __name__ == "__main__":
-            app = QApplication(sys.argv)
-            window = NewStockDialog()
-            sys.exit(app.exec_())
+
+
+
+# init
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = ManageProductDialog()
+    sys.exit(app.exec_())

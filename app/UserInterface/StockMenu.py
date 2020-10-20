@@ -10,18 +10,22 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-#Imports all the Database scripts
+# Imports all the Database scripts
 import read
 import connect
 import tables
 import insert
+from UserInterface.ProductDialog import ManageProductDialog
 
 '''
 This Method manages the code for the Stock UI and its related dialog popup boxes.
 '''
-#Probably bad practice but at dont have to create this object 1000 times
+# Probably bad practice but at dont have to create this object 1000 times
 connector = connect.conn()
 c = connector.cursor()
+result = read.table(tables.TableEnum.manufacturer, c)
+
+
 class NewStockMenu(QMainWindow):
 
     def __init__(self):
@@ -32,7 +36,7 @@ class NewStockMenu(QMainWindow):
         # Variables
         self.CurrentView = "Product"
 
-        #self.BatchView.setHidden(True)
+        # self.BatchView.setHidden(True)
 
         # Makes column size all even
         header = self.ProductList.horizontalHeader()
@@ -40,7 +44,7 @@ class NewStockMenu(QMainWindow):
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
-        #header = self.BatchList.horizontalHeader()
+        # header = self.BatchList.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
@@ -49,14 +53,12 @@ class NewStockMenu(QMainWindow):
 
         self.GenerateProducts()
 
-        #self.SwitchListButton.clicked.connect(self.SwitchList)
-        #self.BatchBackButton.clicked.connect(self.SwitchList)
+        # self.SwitchListButton.clicked.connect(self.SwitchList)
+        # self.BatchBackButton.clicked.connect(self.SwitchList)
         self.CreateProductButton.clicked.connect(self.ShowCreateProductDialog)
         self.CreateProductButton_2.clicked.connect(self.ShowManageProductDialog)
         self.CreateProductButton_3.clicked.connect(self.ShowmanufacterDialog)
         self.SwitchListButton.clicked.connect(self.ShowRestoredialog)
-
-
 
     def SwitchList(self):
         row = self.ProductList.currentRow()
@@ -73,21 +75,20 @@ class NewStockMenu(QMainWindow):
             self.ProductView.setHidden(False)
             self.GenerateProducts()
 
-    #Function Requires database
+    # Function Requires database
     def GenerateProducts(self):
         ProductList = self.ProductList
         ProductList.clear()
         self.ProductList.setHorizontalHeaderLabels(['Code', 'Product', 'Price', 'Quantity'])
 
-        result = read.product_quantity(c) #read.table(tables.TableEnum.product, c)
+        result = read.table(tables.TableEnum.product, c)
         rowCount = 0
         self.ProductList.setRowCount(len(result))
-
 
         for item in result:
             self.ProductList.setItem(rowCount, 0, QTableWidgetItem(str(item[0])))
             self.ProductList.setItem(rowCount, 1, QTableWidgetItem(item[1]))
-            self.ProductList.setItem(rowCount, 2, QTableWidgetItem("$"+str(item[2])))
+            self.ProductList.setItem(rowCount, 2, QTableWidgetItem("$" + str(item[2])))
             self.ProductList.setItem(rowCount, 3, QTableWidgetItem(str(item[3])))
             rowCount = rowCount + 1
 
@@ -115,7 +116,7 @@ class NewStockMenu(QMainWindow):
             self.BatchList.setItem(x, 2, QTableWidgetItem("$100"))
             self.BatchList.setItem(x, 3, QTableWidgetItem("100"))
 
-        #Edit Product Dialog
+        # Edit Product Dialog
         try:
             self.EditProductButton.clicked.disconnect()
         except:
@@ -136,14 +137,15 @@ class NewStockMenu(QMainWindow):
             pass
         self.CreateBatchButton.clicked.connect(self.ShowCreateBatchDialog)
 
-    #Manages input from create product dialog (STILL WIP)
+    # Manages input from create product dialog (STILL WIP)
     def CreateProduct(self, Dialog):
         productName = Dialog.ProductName.text()
         manufacturer = Dialog.ManufacturerBox.currentText()
         Price = round(float(Dialog.RetailPrice.text()), 2)
 
         insert.product(productName, manufacturer, Price, connector, c)
-        #Reloads the list
+
+        # Reloads the list
         self.GenerateProducts()
 
     def EditProduct(self, Dialog):
@@ -155,18 +157,14 @@ class NewStockMenu(QMainWindow):
     def EditBatch(self, Dialog):
         print(Dialog.ProductID.text())
 
+    '''
+    Editing
+    '''
+
     def ShowManageProductDialog(self):
-        mydialog = CreateInputDialog('Pages/ManageProductDialog.ui')
+        mydialog = ManageProductDialog()
+        ####
         mydialog.exec()
-        #dialog = QDialog();
-        #btn = QPushButton("EditProductButton",dialog)
-        #btn.EditProductButton.clicked.connect(self.showEditProductDialog)
-
-
-
-        #self.EditProductButton.clicked.connect(self.showEditProductDialog)
-
-
 
     def ShowmanufacterDialog(self):
         mydialog = CreateInputDialog('Pages/ManufacturerDialog.ui')
@@ -178,19 +176,19 @@ class NewStockMenu(QMainWindow):
 
     def showEditProductDialog(self):
         mydialog = CreateInputDialog('Pages/EditProductDialog.ui')
-        #mydialog.buttonBox.accepted.connect(lambda: self.EditProduct(mydialog))
+        # mydialog.buttonBox.accepted.connect(lambda: self.EditProduct(mydialog))
         mydialog.exec()
 
     def ShowCreateProductDialog(self):
         mydialog = CreateInputDialog('Pages/ProductDialog.ui')
-        #Creates the combobox input
-        result = read.table(tables.TableEnum.manufacturer, c)
+        # Creates the combobox input
+
         for manufacturer in result:
             mydialog.ManufacturerBox.addItem(manufacturer[1])
 
         def priceChanged(text):
             if text != "":
-                mydialog.SalesPrice.setText("$"+str(round(float(text)*1.2, 2)))
+                mydialog.SalesPrice.setText("$" + str(round(float(text) * 1.2, 2)))
             else:
                 mydialog.SalesPrice.setText("$0")
 
@@ -199,6 +197,7 @@ class NewStockMenu(QMainWindow):
 
         mydialog.RetailPrice.textChanged.connect(priceChanged)
         mydialog.buttonBox.accepted.connect(lambda: self.CreateProduct(mydialog))
+
         mydialog.exec()
 
     def ShowEditBatchDialog(self):
@@ -213,6 +212,7 @@ class NewStockMenu(QMainWindow):
         mydialog = CreateInputDialog('Pages/BatchDialog.ui')
         mydialog.buttonBox.accepted.connect(lambda: self.CreateBatch(mydialog))
         mydialog.exec()
+
 
 class CreateInputDialog(QDialog):
     def __init__(self, Dialoglocation):
