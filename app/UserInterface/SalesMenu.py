@@ -27,7 +27,7 @@ class NewSalesMenu(QMainWindow):
     # It will be added, modified or emptied
     saleItems = {}
 
-    # This hash table holds key-value pairs of product
+    # This hash table holds key-value pairs of products
     # Id and corresponding name. Used for searching for
     # product name
     productTable = {}
@@ -60,20 +60,14 @@ class NewSalesMenu(QMainWindow):
         self.Cancel.clicked.connect(lambda: self.initialize())
 
         self.NewSaleButton.clicked.connect(lambda: self.showAddSaleDialog(None, None))
-
         self.EditSalesItem.clicked.connect(lambda: self.editEntry())
         self.DeleteSalesItem.clicked.connect(lambda: self.deleteEntry())
 
     def editEntry(self):
         selectedrow = self.SaleList.selectionModel().selectedRows()
+        for index in sorted(selectedrow):
+            print(index)
 
-        if len(selectedrow) == 1:
-            for index in sorted(selectedrow):
-                row = index.row()
-                print(row.data(0))
-                # TODO RETRIEVE DATA FROM COLUMN
-                # a = self.SaleList.model.index(row, 1)
-                # print(a)
         # for index in sorted(a):
         #     print(index.row())
         return
