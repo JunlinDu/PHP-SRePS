@@ -207,9 +207,13 @@ class NewStockMenu(QMainWindow):
             pId = product.split()[0]
 
             batchId = insert.batch(int(pId), formatedExpireDate, formatedImportDate, int(quantity), connector, c)
-            print(batchId)
+            # print(batchId)
+            self.populateTable(dialog, batchId)
 
-    def populateTable(self, dialog):
+
+    def populateTable(self, dialog, batchId):
+        batchList = read.table(tables.TableEnum.batch, c)
+        
         return
 
     def validateData(self, dialog):
