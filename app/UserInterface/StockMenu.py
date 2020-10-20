@@ -9,6 +9,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from datetime import datetime
 
 # Imports all the Database scripts
 import read
@@ -56,8 +57,8 @@ class NewStockMenu(QMainWindow):
         # self.SwitchListButton.clicked.connect(self.SwitchList)
         # self.BatchBackButton.clicked.connect(self.SwitchList)
         self.CreateProductButton.clicked.connect(self.ShowCreateProductDialog)
-        self.CreateProductButton_2.clicked.connect(self.ShowManageProductDialog)
-        self.CreateProductButton_3.clicked.connect(self.ShowmanufacterDialog)
+        # self.CreateProductButton_2.clicked.connect(self.ShowManageProductDialog)
+        # self.CreateProductButton_3.clicked.connect(self.ShowmanufacterDialog)
         self.SwitchListButton.clicked.connect(self.ShowRestoredialog)
 
     def SwitchList(self):
@@ -157,22 +158,73 @@ class NewStockMenu(QMainWindow):
     def EditBatch(self, Dialog):
         print(Dialog.ProductID.text())
 
+    # def ShowManageProductDialog(self):
+    #     mydialog = ManageProductDialog()
+    #     ####
+    #     mydialog.exec()
+
     '''
     Editing
+    def batch(product_id, exp_date, import_date, quantity, db, cursor):
     '''
-
-    def ShowManageProductDialog(self):
-        mydialog = ManageProductDialog()
-        ####
-        mydialog.exec()
-
     def ShowmanufacterDialog(self):
+        '''
+        [(1, 'Panadol - 25 pill box', 1, Decimal('5.60')),
+        (2, 'Meat - unknown origin, 200g', 2, Decimal('15.20')),
+        (3, 'Liquid - heavy, 100ml cups', 3, Decimal('2020.05')),
+        (4, 'Pain - heavy, 1 serving', 4, Decimal('0.01')),
+        '''
         mydialog = CreateInputDialog('Pages/ManufacturerDialog.ui')
+
         mydialog.exec()
+
 
     def ShowRestoredialog(self):
-        mydialog = CreateInputDialog('Pages/RestoreDialog.ui')
+        mydialog = CreateInputDialog('Pages/StockDialog.ui')
+        productList = read.table(tables.TableEnum.product, c)
+        for product in productList:
+            mydialog.ProductIDCombo.addItem(str(product[0]) + " " + product[1])
+
+        mydialog.Confirm.clicked.connect(lambda: self.commitToDatabase(mydialog))
+
         mydialog.exec()
+
+    def commitToDatabase(self, dialog):
+        res = self.validateData(dialog)
+        if res:
+            date = dialog.dateEdit.date()
+
+            formatedImportDate = datetime.strptime(str(date.year()) + "-" + str(date.month()) + "-" + str(date.day()), '%Y-%m-%d').strftime('%Y-%m-%d')
+            date = dialog.dateEdit_2.date()
+            formatedExpireDate = datetime.strptime(str(date.year()) + "-" + str(date.month()) + "-" + str(date.day()), '%Y-%m-%d').strftime('%Y-%m-%d')
+            print(formatedImportDate + "   " + formatedExpireDate)
+
+            # this is a string, need to be converted to integer later
+            quantity = dialog.Quantity.text()
+
+            product = dialog.ProductIDCombo.currentText()
+            # this is a string, need to be converted to integer later
+            pId = product.split()[0]
+
+            batchId = insert.batch(int(pId), formatedExpireDate, formatedImportDate, int(quantity), connector, c)
+            print(batchId)
+
+    def populateTable(self, dialog):
+        return
+
+    def validateData(self, dialog):
+        quanInput = dialog.Quantity.text()
+        if not quanInput.isnumeric():
+            dialog.label.setText("Invalid Input, Quantity must be numeric")
+            return False
+
+        if int(quanInput) <=0:
+            dialog.label.setText("Invalid Input, Quantity must be greater than 0")
+            return False
+
+        dialog.label.setText(" ")
+        return True
+
 
     def showEditProductDialog(self):
         mydialog = CreateInputDialog('Pages/EditProductDialog.ui')

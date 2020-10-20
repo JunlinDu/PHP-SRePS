@@ -86,7 +86,7 @@ def manufacturer(manufacturer_name, db, cursor):
 def batch(product_id, exp_date, import_date, quantity, db, cursor):
     '''
     This function updates both the batch table and inventory table, and returns
-    the corresponding batch_id.
+    the corresponding batch_id..
     Note: batch table and inventory table may seem to represent the same thing
     and the inventory table may seem redundant. However, the design of the databse
     assigns these two tables different purposes. Records in the batch table, after
@@ -149,9 +149,9 @@ def batch(product_id, exp_date, import_date, quantity, db, cursor):
             "VALUES ('" + str(product_id) + "', '" + exp_date + "', '" + import_date + "', '" + str(quantity) + "'); "
     )
     cursor.execute(query)
-    db.commit()
     batch_id = cursor.lastrowid
     inventory(batch_id, product_id, quantity, db, cursor)
+    db.commit()
     return batch_id
 
 
@@ -281,5 +281,6 @@ if __name__ == "__main__":
     # Note: cursor must be set up this way (although the parameter 'buffered=True')
     # can be omitted. Otherwise 'weakly-referenced object no longer exists' error will occur
     mycursor = connect.cursor(buffered=True)
-    print(new_sale("2020-09-22", connect, mycursor, 2, [(1, 5), (3, 10)]))
+    print(batch(4, '2021-12-10', '2019-09-10', 500, connect, mycursor))
+    # print(new_sale("2020-09-22", connect, mycursor, 2, [(1, 5), (3, 10)]))
     connect.close()
