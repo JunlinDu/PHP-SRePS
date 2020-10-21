@@ -59,10 +59,10 @@ class NewStockMenu(QMainWindow):
         # self.SwitchListButton.clicked.connect(self.SwitchList)
         # self.BatchBackButton.clicked.connect(self.SwitchList)
         self.CreateProductButton.clicked.connect(self.ShowCreateProductDialog)
-        # self.CreateProductButton_2.clicked.connect(self.ShowManageProductDialog)
-        # self.CreateProductButton_3.clicked.connect(self.ShowmanufacterDialog)
+        #self.CreateProductButton_2.clicked.connect(self.ShowManageProductDialog)
+        self.CreateProductButton_2.clicked.connect(self.ShowManageProductDialog)
         self.SwitchListButton.clicked.connect(self.ShowRestoredialog)
-
+        #self.CreateProductButton_2.clicked.connect()
     def SwitchList(self):
         row = self.ProductList.currentRow()
         if row == 0 or row == -1:
@@ -172,16 +172,48 @@ class NewStockMenu(QMainWindow):
     Editing
     def batch(product_id, exp_date, import_date, quantity, db, cursor):
     '''
-    def ShowmanufacterDialog(self):
+    def ShowManageProductDialog(self):
         '''
         [(1, 'Panadol - 25 pill box', 1, Decimal('5.60')),
         (2, 'Meat - unknown origin, 200g', 2, Decimal('15.20')),
         (3, 'Liquid - heavy, 100ml cups', 3, Decimal('2020.05')),
         (4, 'Pain - heavy, 1 serving', 4, Decimal('0.01')),
         '''
-        mydialog = CreateInputDialog('Pages/ManufacturerDialog.ui')
+        mydialog = CreateInputDialog('Pages/ManageProductDialog.ui')
+        productList = read.table(tables.TableEnum.product, c)
+
+        for product in productList:
+            mydialog.comboBox.addItem(str(product[0]) + " " + product[1])
+            #mydialog.OK.clicked.connect(lambda: self.commitToDatabase1(mydialog))
+            #self.populateTable2(dialog)
 
         mydialog.exec()
+
+    def commitToDatabase1(self, dialog):
+        self.populateTable1(dialog)
+
+
+    def populateTable2(self, dialog):
+        header2 = dialog.BatchList.horizontalHeader()
+        header2.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header2.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        header2.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header2.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
+        tableWidget = dialog.BatchList
+        tableWidget.clear()
+        dialog.BatchList.setHorizontalHeaderLabels(['Batch_ID', 'Product_ID', 'EXP_date', 'Import_Date', 'Quantity'])
+
+        ptl = read.table(tables.TableEnum.product, c)
+        rowCount = 0
+        dialog.BatchList.setRowCount(len(ptl))
+
+        for item1 in ptl:
+            dialog.BatchList.setItem(rowCount, 0, QTableWidgetItem(str(item1[0])))
+            dialog.BatchList.setItem(rowCount, 1, QTableWidgetItem(str(item1[1])))
+            dialog.BatchList.setItem(rowCount, 2, QTableWidgetItem(str(item1[2])))
+            dialog.BatchList.setItem(rowCount, 3, QTableWidgetItem(str(item1[3])))
+
+            rowCount = rowCount +1
 
 
     def ShowRestoredialog(self):

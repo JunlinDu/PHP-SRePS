@@ -36,7 +36,7 @@ class ManageProductDialog(QDialog):
 
     def ShowProductDialog(self):
         mydialog = CreateInputDialog1('Pages/EditProductDialog.ui')
-        mydialog.buttonBox.accepted.connect(lambda: self.EditProduct(mydialog))
+        mydialog.EditProductButton.accepted.connect(lambda: self.EditProduct(mydialog))
         mydialog.exec()
 
 class CreateInputDialog1(QDialog):
