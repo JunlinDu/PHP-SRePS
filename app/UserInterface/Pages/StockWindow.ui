@@ -477,54 +477,6 @@ background-color: rgb(97, 97, 97);</string>
       <string>Manage Existing Products</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="CreateProductButton_4">
-     <property name="geometry">
-      <rect>
-       <x>740</x>
-       <y>630</y>
-       <width>211</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Sans Serif</family>
-       <pointsize>15</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(200, 200, 200);</string>
-     </property>
-     <property name="text">
-      <string>Manage Product</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="CreateProductButton_5">
-     <property name="geometry">
-      <rect>
-       <x>750</x>
-       <y>630</y>
-       <width>211</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MS Sans Serif</family>
-       <pointsize>15</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(200, 200, 200);</string>
-     </property>
-     <property name="text">
-      <string>Manage Product</string>
-     </property>
-    </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

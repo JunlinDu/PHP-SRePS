@@ -253,6 +253,37 @@ color: rgb(255, 255, 255);</string>
      <height>192</height>
     </rect>
    </property>
+   <property name="columnCount">
+    <number>5</number>
+   </property>
+   <attribute name="verticalHeaderVisible">
+    <bool>false</bool>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>Batch_ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Product_ID</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>EXP_date</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Import_date</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Quantity</string>
+    </property>
+   </column>
   </widget>
   <widget class="QPushButton" name="Confirm">
    <property name="geometry">
