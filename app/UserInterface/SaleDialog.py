@@ -16,6 +16,7 @@ class CreateSaleDialog(QDialog):
         loadUi(Dialoglocation, self)
         if prodId is not None and prodQuantity is not None:
             self.ProductID.setText(prodId)
+            self.Quantity.setText(prodQuantity)
         self.Quantity.setText(prodQuantity)
         self.ProductTable = ProductTable
         self.show()

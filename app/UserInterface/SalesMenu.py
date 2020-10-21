@@ -68,15 +68,18 @@ class NewSalesMenu(QMainWindow):
 
     def editEntry(self):
         selectedrow = self.SaleList.selectionModel().selectedRows()
-        for index in sorted(selectedrow):
-            print(index)
-
-        # for index in sorted(a):
-        #     print(index.row())
-        return
+        if len(selectedrow) == 1:
+            for index in sorted(selectedrow):
+                PId = self.SaleList.item(index.row(), 0)
+                PQuan = self.SaleList.item(index.row(), 2)
+                self.showAddSaleDialog(PId.text(), PQuan.text())
 
     def deleteEntry(self):
-        return
+        selectedrow = self.SaleList.selectionModel().selectedRows()
+        if len(selectedrow) == 1:
+            for index in sorted(selectedrow):
+                PId = self.SaleList.item(index.row(), 0)
+                self.SaleList.removeRow(index.row())
 
     def initiateTables(self):
         # initiates the productTable table.
