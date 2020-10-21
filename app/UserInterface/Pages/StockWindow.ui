@@ -410,7 +410,7 @@ background-color: rgb(97, 97, 97);</string>
       <rect>
        <x>0</x>
        <y>10</y>
-       <width>211</width>
+       <width>261</width>
        <height>41</height>
       </rect>
      </property>
@@ -426,7 +426,7 @@ background-color: rgb(97, 97, 97);</string>
       <string notr="true">background-color: rgb(200, 200, 200);</string>
      </property>
      <property name="text">
-      <string>Create Product</string>
+      <string>Create New Product</string>
      </property>
     </widget>
     <widget class="QPushButton" name="SwitchListButton">
@@ -450,7 +450,7 @@ background-color: rgb(97, 97, 97);</string>
       <string notr="true">background-color: rgb(200, 200, 200);</string>
      </property>
      <property name="text">
-      <string>Restock List</string>
+      <string>Add New Stock</string>
      </property>
     </widget>
     <widget class="QPushButton" name="CreateProductButton_2">
@@ -458,6 +458,30 @@ background-color: rgb(97, 97, 97);</string>
       <rect>
        <x>0</x>
        <y>70</y>
+       <width>261</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MS Sans Serif</family>
+       <pointsize>15</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(200, 200, 200);</string>
+     </property>
+     <property name="text">
+      <string>Manage Existing Products</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="CreateProductButton_4">
+     <property name="geometry">
+      <rect>
+       <x>740</x>
+       <y>630</y>
        <width>211</width>
        <height>41</height>
       </rect>
@@ -477,11 +501,11 @@ background-color: rgb(97, 97, 97);</string>
       <string>Manage Product</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="CreateProductButton_3">
+    <widget class="QPushButton" name="CreateProductButton_5">
      <property name="geometry">
       <rect>
        <x>750</x>
-       <y>70</y>
+       <y>630</y>
        <width>211</width>
        <height>41</height>
       </rect>
@@ -498,7 +522,7 @@ background-color: rgb(97, 97, 97);</string>
       <string notr="true">background-color: rgb(200, 200, 200);</string>
      </property>
      <property name="text">
-      <string>Manage Manufacturer</string>
+      <string>Manage Product</string>
      </property>
     </widget>
    </widget>

@@ -1,5 +1,5 @@
 config = {
         "user": "root",
-        "passwd": "",
+        "passwd": "password",
         "host": "localhost",
         "database": "PHP_SRePS"}
