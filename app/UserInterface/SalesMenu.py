@@ -79,6 +79,7 @@ class NewSalesMenu(QMainWindow):
         if len(selectedrow) == 1:
             for index in sorted(selectedrow):
                 PId = self.SaleList.item(index.row(), 0)
+                self.saleItems.pop(int(PId.text()))
                 self.SaleList.removeRow(index.row())
 
     def initiateTables(self):
@@ -159,6 +160,7 @@ class NewSalesMenu(QMainWindow):
 
     def saleConfirm(self, dialog):
         if dialog.productSoldOut is None:
+            self.showMessageDialog("Sales Record Successfully Added!")
             self.initialize()
         else:
             self.showMessageDialog(dialog.productSoldOut + " does not have enough left")
