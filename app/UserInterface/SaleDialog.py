@@ -9,7 +9,8 @@ import connect
 
 class CreateSaleDialog(QDialog):
     producttuple = ()
-
+    ProductID = None
+    Quantity = None
     def __init__(self, Dialoglocation, ProductTable, prodId, prodQuantity):
         super(CreateSaleDialog, self).__init__()
         loadUi(Dialoglocation, self)

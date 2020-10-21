@@ -94,6 +94,8 @@ class NewSalesMenu(QMainWindow):
         if dialog.producttuple != (0, 0):
             if dialog.producttuple[0] not in self.saleItems:
                 self.saleItems[dialog.producttuple[0]] = dialog.producttuple[1]
+            elif dialog.ProductID is not None or dialog.Quantity is not None:
+                self.saleItems[dialog.producttuple[0]] = dialog.producttuple[1]
             else:
                 self.saleItems[dialog.producttuple[0]] = self.saleItems[dialog.producttuple[0]] + dialog.producttuple[1]
             self.setColumns()
