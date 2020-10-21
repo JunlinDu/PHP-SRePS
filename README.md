@@ -1,4 +1,11 @@
 # Public Health Pharmacy Digital Sales System
+
+Note: The current password for the database in the config.py file is **password**.  If the error **"AttributeError: 'NoneType' object has no attribute 'cursor'"** appears, check the following:
+~~~
+* Your Local MySQL database server is running.
+* The password in the config file matchup with your local MySQL database password.
+~~~
+
 --Current file structure
 ```
 PHP-SRePS/
