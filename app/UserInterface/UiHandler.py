@@ -28,7 +28,7 @@ class MyApp(QMainWindow):
 
     def openSalesMenu(self):
         self.close()
-        self.Open = SalesMenu.NewStockMenu()
+        self.Open = SalesMenu.NewSalesMenu()
         self.Open.show()
 
     def openReportMenu(self):
