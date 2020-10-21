@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="menu">
+    <file>SourceImages/BackArrow.png</file>
+    <file>SourceImages/book.png</file>
+    <file>SourceImages/Box.png</file>
+    <file>SourceImages/dollar.png</file>
+    <file>SourceImages/report.png</file>
+  </qresource>
+  <qresource prefix="icons">
+    <file>SourceImages/Bin.png</file>
+    <file>SourceImages/pencil.png</file>
+    <file>SourceImages/plus.png</file>
+  </qresource>
+</RCC>
