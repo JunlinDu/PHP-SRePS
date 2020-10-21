@@ -1,7 +1,7 @@
 import UserInterface.StockMenu as StockMenu
 import UserInterface.SalesMenu as SalesMenu
 import UserInterface.ReportMenu as ReportMenu
-#from UserInterface import ForecastMenu //WIP WAITING FOR SCRIPT TO BE FINISHED
+import UserInterface.ForecastMenu as ForecastMenu
 
 
 '''
@@ -18,7 +18,7 @@ def InitButtons(UI):
     UI.StockMenuButton.clicked.connect(lambda i: openNewMenu(UI, StockMenu.NewStockMenu()))
     UI.SalesMenuButton.clicked.connect(lambda i: openNewMenu(UI, SalesMenu.NewSalesMenu()))
     UI.ReportMenuButton.clicked.connect(lambda i: openNewMenu(UI, ReportMenu.NewReportMenu()))
-    #UI.ForecastMenuButton.clicked.connect(lambda i: openNewMenu(UI, ForecastMenu.NewForecastMenu()))
+    UI.ForecastMenuButton.clicked.connect(lambda i: openNewMenu(UI, ForecastMenu.NewForecastMenu()))
 
 def openNewMenu(UI, Item):
     UI.close()

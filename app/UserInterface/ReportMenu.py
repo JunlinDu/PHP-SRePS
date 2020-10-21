@@ -25,6 +25,7 @@ class NewReportMenu(QMainWindow):
         loadUi('Pages/ReportWindow.ui', self)
         self.show()
         self.ResizeSalesBreakdown()
+        SideMenuModule.InitButtons(self)
         # refresh page
         self.UpdatePage()
         # setup signals

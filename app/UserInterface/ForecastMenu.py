@@ -9,6 +9,7 @@ from PyQt5.uic import loadUi
 #Imports all the Database scripts
 import read
 import connect
+import UserInterface.SideMenuModule as SideMenuModule
 
 '''
 This Method manages the code for the Stock UI and its related dialog popup boxes.
@@ -27,6 +28,7 @@ class NewForecastMenu(QMainWindow):
         self.show()
         self.CurrentView = "Forecast"
         self.resizeBreakdownTable()
+        SideMenuModule.InitButtons(self)
         self.updatePage()
 
         self.periodComboBox.currentIndexChanged.connect(self.updatePage)
