@@ -5,6 +5,7 @@ from PyQt5.uic import loadUi
 
 from UserInterface import StockMenu
 from UserInterface import SalesMenu
+from UserInterface import ForecastMenu
 from UserInterface.Resources.images import *
 
 
@@ -16,6 +17,7 @@ class MyApp(QMainWindow):
         self.show()
         self.StockMenu.clicked.connect(self.openStockMenu)
         self.SalesMenu.clicked.connect(self.openStockMenu)
+        self.ForecastMenu.clicked.connect(self.openForecastMenu)
 
     def openStockMenu(self):
         self.close()
@@ -27,6 +29,10 @@ class MyApp(QMainWindow):
         self.Open = SalesMenu.NewStockMenu()
         self.Open.show()
 
+    def openForecastMenu(self):
+        self.close()
+        self.Open = ForecastMenu.NewForecastMenu()
+        self.Open.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

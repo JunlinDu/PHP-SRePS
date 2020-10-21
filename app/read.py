@@ -304,6 +304,47 @@ def report_elements(startDate, endDate, cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+def forecast_elements(period, cursor):
+    '''
+    period = "1 YEAR", "9 MONTH", "6 MONTH", "3 MONTH", "1 MONTH", "1 WEEK"
+    RETURNS : ExpectedSales, NetProfit, ProductsSold
+    '''
+    query = (
+        "SELECT "
+        "ROUND(SUM(P.Price * SI.Quantity * 1.2), 2) AS ExpectedSales, "
+        "ROUND(SUM(P.PRICE * SI.Quantity * 0.2), 2) AS NetProfit, "
+        "SUM(SI.Quantity) AS ProductsSold "
+        "FROM Sales S "
+        "INNER JOIN Sale_Items SI ON SI.Sales_id = S.Sales_id "
+        "INNER JOIN Product P ON P.Product_id = SI.Product_id "
+        "WHERE (S.date BETWEEN DATE_SUB(CURDATE(), INTERVAL " + period + ") AND CURDATE());"
+    )
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+def forecast_breakdown(period, cursor):
+    '''
+    period = "1 YEAR", "9 MONTH", "6 MONTH", "3 MONTH", "1 MONTH", "1 WEEK"
+    RETURNS : ProductID, Description, Quantity, TotalSales, NetProfit
+    '''
+
+    query = (
+        "SELECT "
+        "P.Product_id AS ProductID, "
+        "P.Product_name AS Description, "
+        "SUM(SI.Quantity) AS Quantity, "
+        "ROUND(SUM(P.Price * SI.Quantity * 1.2), 2) AS ExpectedSales, "
+        "ROUND(SUM(P.PRICE * SI.Quantity * 0.2), 2) AS NetProfit "
+        "FROM Product P "
+        "INNER JOIN Sale_Items SI ON SI.Product_id = P.Product_id "
+        "INNER JOIN Sales S ON S.Sales_id = SI.Sales_id "
+        "WHERE (S.date BETWEEN DATE_SUB(CURDATE(), INTERVAL " + period + ") AND CURDATE()) "
+        "GROUP BY ProductID;"
+    )
+    cursor.execute(query)
+    return cursor.fetchall()
+
 
 if __name__ == "__main__":
     connect = connect.conn()
