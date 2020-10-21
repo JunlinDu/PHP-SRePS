@@ -45,6 +45,9 @@ def result(result):
     print(print(str(len(result)) + ' rows written successfully to ' + f.name))
 
 if __name__ == "__main__":
+    connection = connect.conn()
+    cursor = connection.cursor()
+
     table('batch')
     table('customer')
     table('inventory')
@@ -52,8 +55,5 @@ if __name__ == "__main__":
     table('product')
     table('sale_items')
     table('sales')
-
-    connection = connect.conn()
-    cursor = connection.cursor()
 
     result(read.sales_breakdown("2020-01-01", "2020-12-31", cursor))
