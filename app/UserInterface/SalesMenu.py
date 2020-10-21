@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem, QDialog, QTableView, QTableWidget
 from PyQt5.uic import loadUi
-from UserInterface import SaleDialog
+from UserInterface import SaleDialog, StockMenu, ReportMenu, ForecastMenu
 from datetime import datetime
 import read
 import tables
@@ -64,18 +64,25 @@ class NewSalesMenu(QMainWindow):
         self.NewSaleButton.clicked.connect(lambda: self.showAddSaleDialog(None, None))
         self.EditSalesItem.clicked.connect(lambda: self.editEntry())
         self.DeleteSalesItem.clicked.connect(lambda: self.deleteEntry())
+        self.StockMenuButton.clicked.connect(self.openStockMenu)
+        self.ReportMenuButton.clicked.connect(self.openReportMenu)
+        self.ForecastMenuButton.clicked.connect(self.openForecastMenu)
 
     def editEntry(self):
         selectedrow = self.SaleList.selectionModel().selectedRows()
-        for index in sorted(selectedrow):
-            print(index)
-
-        # for index in sorted(a):
-        #     print(index.row())
-        return
+        if len(selectedrow) == 1:
+            for index in sorted(selectedrow):
+                PId = self.SaleList.item(index.row(), 0)
+                PQuan = self.SaleList.item(index.row(), 2)
+                self.showAddSaleDialog(PId.text(), PQuan.text())
 
     def deleteEntry(self):
-        return
+        selectedrow = self.SaleList.selectionModel().selectedRows()
+        if len(selectedrow) == 1:
+            for index in sorted(selectedrow):
+                PId = self.SaleList.item(index.row(), 0)
+                self.saleItems.pop(int(PId.text()))
+                self.SaleList.removeRow(index.row())
 
     def initiateTables(self):
         # initiates the productTable table.
@@ -84,22 +91,20 @@ class NewSalesMenu(QMainWindow):
         # initiates the customerTable table.
         for c in customerList:
             self.customerTable[c[0]] = (c[1] + " " + c[2])
-        # print(self.productTable)
-        # print(self.customerTable)
 
     def setSaleItems(self, dialog):
         if dialog.producttuple != (0, 0):
             if dialog.producttuple[0] not in self.saleItems:
                 self.saleItems[dialog.producttuple[0]] = dialog.producttuple[1]
+            elif dialog.ProductID is not None or dialog.Quantity is not None:
+                self.saleItems[dialog.producttuple[0]] = dialog.producttuple[1]
             else:
-                self.saleItems[dialog.producttuple[0]] = self. \
-                                                             saleItems[dialog.producttuple[0]] + dialog.producttuple[1]
+                self.saleItems[dialog.producttuple[0]] = self.saleItems[dialog.producttuple[0]] + dialog.producttuple[1]
             self.setColumns()
 
     def setDate(self, date):
         d = QDate(date.year, date.month, date.day)
         self.dateEdit.setDate(d)
-        # print(type(self.dateEdit.date().day()))
 
     def setColumns(self):
         self.SaleList.setRowCount(len(self.saleItems))
@@ -107,13 +112,11 @@ class NewSalesMenu(QMainWindow):
         for PId in self.saleItems:
             quantity = self.saleItems[PId]
             subtotal = float(self.productTable[PId][1] * quantity) * 1.2
-
             self.total += subtotal
             self.SaleList.setItem(rowNumber, 0, QTableWidgetItem(str(PId)))
             self.SaleList.setItem(rowNumber, 1, QTableWidgetItem(self.productTable[PId][0]))
             self.SaleList.setItem(rowNumber, 2, QTableWidgetItem(str(quantity)))
             self.SaleList.setItem(rowNumber, 3, QTableWidgetItem(str(subtotal)))
-
             rowNumber += 1
 
         self.GrandTotalText.setText(str("{:.2f}".format(self.total)))
@@ -138,10 +141,7 @@ class NewSalesMenu(QMainWindow):
             return
         if len(self.saleItems) == 0:
             self.showMessageDialog("Sales List is Empty, Please Enter Items Before Proceed")
-        self.showSummaryDialog(date, customerId,
-                               self.customerTable[int(customerId)],
-                               total, self.saleItems, self.productTable)
-
+        self.showSummaryDialog(date, customerId, self.customerTable[int(customerId)], total, self.saleItems, self.productTable)
 
     def verifyCustomerId(self, id):
         content = self.lineEditId.text()
@@ -155,6 +155,7 @@ class NewSalesMenu(QMainWindow):
 
     def saleConfirm(self, dialog):
         if dialog.productSoldOut is None:
+            self.showMessageDialog("Sales Record Successfully Added!")
             self.initialize()
         else:
             self.showMessageDialog("There is not enough "+dialog.productSoldOut + " left")
@@ -173,15 +174,31 @@ class NewSalesMenu(QMainWindow):
         dialog.buttonBox.accepted.connect(lambda: self.saleConfirm(dialog))
         dialog.exec_()
 
-class Summary(QDialog):
+    def openStockMenu(self):
+        self.close()
+        self.Open = StockMenu.NewStockMenu()
+        self.Open.show()
 
+    def openReportMenu(self):
+        self.close()
+        self.Open = ReportMenu.NewReportMenu()
+        self.Open.show()
+
+    def openForecastMenu(self):
+        self.close()
+        self.Open = ForecastMenu.NewForecastMenu()
+        self.Open.show()
+
+
+class Summary(QDialog):
     productSoldOut = None
 
     def __init__(self, date, customerId, name, total, saleItemsTable, productsTable):
         super(Summary, self).__init__()
         loadUi('Pages/SummaryDialog.ui', self)
 
-        self.date = str(date.year()) + "-" + str(date.month()) + "-" + str(date.day())
+        self.date = datetime.strptime(str(date.year()) + "-" + str(date.month()) + "-" + str(date.day()),
+                                      '%Y-%m-%d').strftime('%Y-%m-%d')
         self.customerId = customerId
         self.name = name
         self.total = total
@@ -195,7 +212,6 @@ class Summary(QDialog):
         self.Date.setText(datetime.strptime(self.date, '%Y-%m-%d').strftime('%m/%d/%Y'))
         self.Total.setText(str(total))
 
-        # self.buttonBox.accepted.connect(self.accept)
         self.accepted.connect(lambda: self.execute())
 
     def execute(self):
@@ -211,7 +227,6 @@ class Summary(QDialog):
     def setSaleList(self):
         self.SaleList.setRowCount(len(self.saleItems))
         r = 0
-
         for PId in self.saleItems:
             self.SaleList.setItem(r, 0, QTableWidgetItem(self.productsTable[PId][0]))
             self.SaleList.setItem(r, 1, QTableWidgetItem(str(self.saleItems[PId])))

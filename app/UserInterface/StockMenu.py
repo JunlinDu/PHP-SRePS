@@ -17,6 +17,7 @@ import read
 import connect
 import tables
 import insert
+from UserInterface import SalesMenu, ReportMenu, ForecastMenu
 from UserInterface.ProductDialog import ManageProductDialog
 
 '''
@@ -61,6 +62,11 @@ class NewStockMenu(QMainWindow):
         # self.CreateProductButton_2.clicked.connect(self.ShowManageProductDialog)
         # self.CreateProductButton_3.clicked.connect(self.ShowmanufacterDialog)
         self.SwitchListButton.clicked.connect(self.ShowRestoredialog)
+
+        #self.CreateProductButton_2.clicked.connect()
+        self.SalesMenuButton.clicked.connect(self.openSalesMenu)
+        self.ReportMenuButton.clicked.connect(self.openReportMenu)
+        self.ForecastMenuButton.clicked.connect(self.openForecastMenu)
 
     def SwitchList(self):
         row = self.ProductList.currentRow()
@@ -269,6 +275,21 @@ class NewStockMenu(QMainWindow):
         mydialog = CreateInputDialog('Pages/BatchDialog.ui')
         mydialog.buttonBox.accepted.connect(lambda: self.CreateBatch(mydialog))
         mydialog.exec()
+
+    def openSalesMenu(self):
+        self.close()
+        self.Open = SalesMenu.NewSalesMenu()
+        self.Open.show()
+
+    def openReportMenu(self):
+        self.close()
+        self.Open = ReportMenu.NewReportMenu()
+        self.Open.show()
+
+    def openForecastMenu(self):
+        self.close()
+        self.Open = ForecastMenu.NewForecastMenu()
+        self.Open.show()
 
 
 class CreateInputDialog(QDialog):

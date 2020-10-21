@@ -1,7 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem, QDialog, QDialogButtonBox
 from PyQt5.uic import loadUi
-from PyQt5.uic.properties import QtGui
 
 import read
 import tables
@@ -10,16 +9,19 @@ import connect
 
 class CreateSaleDialog(QDialog):
     producttuple = ()
-
+    ProductID = None
+    Quantity = None
     def __init__(self, Dialoglocation, ProductTable, prodId, prodQuantity):
         super(CreateSaleDialog, self).__init__()
         loadUi(Dialoglocation, self)
         if prodId is not None and prodQuantity is not None:
             self.ProductID.setText(prodId)
+            self.Quantity.setText(prodQuantity)
         self.Quantity.setText(prodQuantity)
         self.ProductTable = ProductTable
         self.show()
         self.CheckName.clicked.connect(lambda: self.getName())
+        # self.buttonBox.accepted.connect(self.accept)
         self.accepted.connect(lambda: self.passData())
 
     def getName(self):
@@ -31,7 +33,6 @@ class CreateSaleDialog(QDialog):
     def passData(self):
         pId = self.ProductID.text()
         pQuan = self.Quantity.text()
-
         if self.verifyIntegrity(pId, pQuan):
             self.producttuple = (int(pId), int(pQuan))
         else:
