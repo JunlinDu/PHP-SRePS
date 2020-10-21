@@ -39,16 +39,16 @@ CREATE TABLE product (
     product_id INT AUTO_INCREMENT UNIQUE NOT NULL,
     product_name VARCHAR(50) NOT NULL,
     manufacturer_id INT NOT NULL,
-    price DECIMAL(6,2),
+    price DECIMAL(6,2) NOT NULL,
     PRIMARY KEY (product_id),
     FOREIGN KEY (manufacturer_id) REFERENCES manufacturer(manufacturer_id)
 );
 
 INSERT INTO product (`product_name`, `manufacturer_id`, `price`) VALUES ('Panadol - 25 pill box', '1', '5.60');
 INSERT INTO product (`product_name`, `manufacturer_id`, `price`) VALUES ('Meat - unknown origin, 200g', '2', '15.20');
-INSERT INTO product (`product_name`, `manufacturer_id`, `price`) VALUES ('Liquid - heavy, 100ml cups', '3', '2020.05');
+INSERT INTO product (`product_name`, `manufacturer_id`, `price`) VALUES ('Liquid - heavy, 100ml cups', '3', '20.05');
 INSERT INTO product (`product_name`, `manufacturer_id`, `price`) VALUES ('Pain - heavy, 1 serving', '4', '0.01');
-INSERT INTO product (`product_name`, `manufacturer_id`) VALUES ('Guck - 1 handful', '5');
+INSERT INTO product (`product_name`, `manufacturer_id`, `price`) VALUES ('Guck - 1 handful', '5', '12.5');
 
 CREATE TABLE batch (
     batch_id INT AUTO_INCREMENT UNIQUE NOT NULL,
