@@ -10,6 +10,7 @@ import read
 import tables
 import connect
 import insert
+import UserInterface.SideMenuModule as SideMenuModule
 
 connector = connect.conn()
 c = connector.cursor()
@@ -47,6 +48,7 @@ class NewSalesMenu(QMainWindow):
 
         self.initiateTables()
         self.setDate(datetime.today())
+        SideMenuModule.InitButtons(self, self.SalesMenuButton)
 
         header = self.SaleList.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
@@ -156,7 +158,7 @@ class NewSalesMenu(QMainWindow):
             self.showMessageDialog("Sales Record Successfully Added!")
             self.initialize()
         else:
-            self.showMessageDialog(dialog.productSoldOut + " does not have enough left")
+            self.showMessageDialog("There is not enough "+dialog.productSoldOut + " left")
 
     def showAddSaleDialog(self, prodId, prodQuantity):
         dialog = SaleDialog.CreateSaleDialog('Pages/AddSaleDialog.ui', self.productTable, prodId, prodQuantity)

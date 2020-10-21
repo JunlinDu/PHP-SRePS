@@ -28,7 +28,7 @@ class NewForecastMenu(QMainWindow):
         self.show()
         self.CurrentView = "Forecast"
         self.resizeBreakdownTable()
-        SideMenuModule.InitButtons(self)
+        SideMenuModule.InitButtons(self, self.ForecastMenuButton)
         self.updatePage()
 
         self.periodComboBox.currentIndexChanged.connect(self.updatePage)

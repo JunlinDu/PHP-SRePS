@@ -29,7 +29,7 @@ class NewReportMenu(QMainWindow):
         self.monthComboBox.currentIndexChanged.connect(self.UpdatePage)
         self.yearComboBox.currentIndexChanged.connect(self.UpdatePage)
         self.ExportReport.clicked.connect(self.Export)
-        SideMenuModule.InitButtons(self)
+        SideMenuModule.InitButtons(self, self.ReportMenuButton)
 
     def ResizeSalesBreakdown(self):
         # resize breakdown list to better fit.
