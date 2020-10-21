@@ -1,7 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem, QDialog, QDialogButtonBox
 from PyQt5.uic import loadUi
-from PyQt5.uic.properties import QtGui
 
 import read
 import tables
@@ -33,7 +32,6 @@ class CreateSaleDialog(QDialog):
     def passData(self):
         pId = self.ProductID.text()
         pQuan = self.Quantity.text()
-
         if self.verifyIntegrity(pId, pQuan):
             self.producttuple = (int(pId), int(pQuan))
         else:
