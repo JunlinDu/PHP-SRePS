@@ -64,9 +64,9 @@ class NewSalesMenu(QMainWindow):
         self.NewSaleButton.clicked.connect(lambda: self.showAddSaleDialog(None, None))
         self.EditSalesItem.clicked.connect(lambda: self.editEntry())
         self.DeleteSalesItem.clicked.connect(lambda: self.deleteEntry())
-        self.StockMenuButton.clicked.connect(self.openStockMenu)
-        self.ReportMenuButton.clicked.connect(self.openReportMenu)
-        self.ForecastMenuButton.clicked.connect(self.openForecastMenu)
+        #self.StockMenuButton.clicked.connect(self.openStockMenu)
+        #self.ReportMenuButton.clicked.connect(self.openReportMenu)
+        #self.ForecastMenuButton.clicked.connect(self.openForecastMenu)
 
     def editEntry(self):
         selectedrow = self.SaleList.selectionModel().selectedRows()

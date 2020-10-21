@@ -64,9 +64,9 @@ class NewStockMenu(QMainWindow):
         self.SwitchListButton.clicked.connect(self.ShowRestoredialog)
 
         #self.CreateProductButton_2.clicked.connect()
-        self.SalesMenuButton.clicked.connect(self.openSalesMenu)
-        self.ReportMenuButton.clicked.connect(self.openReportMenu)
-        self.ForecastMenuButton.clicked.connect(self.openForecastMenu)
+        #self.SalesMenuButton.clicked.connect(self.openSalesMenu)
+        #self.ReportMenuButton.clicked.connect(self.openReportMenu)
+        #self.ForecastMenuButton.clicked.connect(self.openForecastMenu)
 
     def SwitchList(self):
         row = self.ProductList.currentRow()
