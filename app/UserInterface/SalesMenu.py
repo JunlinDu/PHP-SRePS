@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import QDate
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem, QDialog, QTableView, QTableWidget
 from PyQt5.uic import loadUi
-from UserInterface import SaleDialog
+from UserInterface import SaleDialog, StockMenu, ReportMenu, ForecastMenu
 from datetime import datetime
 import read
 import tables
@@ -62,6 +62,9 @@ class NewSalesMenu(QMainWindow):
         self.NewSaleButton.clicked.connect(lambda: self.showAddSaleDialog(None, None))
         self.EditSalesItem.clicked.connect(lambda: self.editEntry())
         self.DeleteSalesItem.clicked.connect(lambda: self.deleteEntry())
+        self.StockMenuButton.clicked.connect(self.openStockMenu)
+        self.ReportMenuButton.clicked.connect(self.openReportMenu)
+        self.ForecastMenuButton.clicked.connect(self.openForecastMenu)
 
     def editEntry(self):
         selectedrow = self.SaleList.selectionModel().selectedRows()
@@ -171,6 +174,21 @@ class NewSalesMenu(QMainWindow):
         dialog.buttonBox.accepted.connect(lambda: self.saleConfirm(dialog))
         dialog.exec_()
 
+    def openStockMenu(self):
+        self.close()
+        self.Open = StockMenu.NewStockMenu()
+        self.Open.show()
+
+    def openReportMenu(self):
+        self.close()
+        self.Open = ReportMenu.NewReportMenu()
+        self.Open.show()
+
+    def openForecastMenu(self):
+        self.close()
+        self.Open = ForecastMenu.NewForecastMenu()
+        self.Open.show()
+
 class Summary(QDialog):
 
     productSoldOut = None
@@ -179,7 +197,7 @@ class Summary(QDialog):
         super(Summary, self).__init__()
         loadUi('Pages/SummaryDialog.ui', self)
 
-        self.date = str(date.year()) + "-" + str(date.month()) + "-" + str(date.day())
+        self.date = datetime.strptime(str(date.year()) + "-" + str(date.month()) + "-" + str(date.day()), '%Y-%m-%d').strftime('%Y-%m-%d')
         self.customerId = customerId
         self.name = name
         self.total = total
