@@ -84,7 +84,9 @@ class NewStockMenu(QMainWindow):
         ProductList.clear()
         self.ProductList.setHorizontalHeaderLabels(['Code', 'Product', 'Price', 'Quantity'])
 
-        result = read.product_quantity(c)
+
+        #result = read.product_quantity(c)
+        result = read.table(tables.TableEnum.product, c)
         rowCount = 0
         self.ProductList.setRowCount(len(result))
 
@@ -210,13 +212,32 @@ class NewStockMenu(QMainWindow):
 
             batchId = insert.batch(int(pId), formatedExpireDate, formatedImportDate, int(quantity), connector, c)
             # print(batchId)
-            self.populateTable(dialog, batchId)
+            self.populateTable(dialog)
 
 
-    def populateTable(self, dialog, batchId):
+    def populateTable(self, dialog):
+        header1 = dialog.tableWidget.horizontalHeader()
+        header1.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header1.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        header1.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header1.setSectionResizeMode(3, QtWidgets.QHeaderView.Stretch)
+        header1.setSectionResizeMode(4, QtWidgets.QHeaderView.Stretch)
+        tableWidget = dialog.tableWidget
+        tableWidget.clear()
+        dialog.tableWidget.setHorizontalHeaderLabels(['Batch_ID', 'Product_ID', 'EXP_date', 'Import_Date', 'Quantity'])
+
         batchList = read.table(tables.TableEnum.batch, c)
-        
-        return
+        rowCount = 0
+        dialog.tableWidget.setRowCount(len(batchList))
+
+        for item1 in batchList:
+            dialog.tableWidget.setItem(rowCount, 0, QTableWidgetItem(str(item1[0])))
+            dialog.tableWidget.setItem(rowCount, 1, QTableWidgetItem(str(item1[1])))
+            dialog.tableWidget.setItem(rowCount, 2, QTableWidgetItem(str(item1[2])))
+            dialog.tableWidget.setItem(rowCount, 3, QTableWidgetItem(str(item1[3])))
+            dialog.tableWidget.setItem(rowCount, 4, QTableWidgetItem(str(item1[4])))
+            rowCount = rowCount + 1
+
 
     def validateData(self, dialog):
         quanInput = dialog.Quantity.text()
