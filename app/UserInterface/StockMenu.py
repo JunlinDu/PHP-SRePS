@@ -82,9 +82,12 @@ class NewStockMenu(QMainWindow):
     def GenerateProducts(self):
         ProductList = self.ProductList
         ProductList.clear()
-        self.ProductList.setHorizontalHeaderLabels(['Code', 'Product', 'Price', 'Quantity'])
+        #self.ProductList.setHorizontalHeaderLabels(['Code', 'Product', 'Price', 'Quantity'])
+        # either labels are wrong or table output is wrong, i opted to change label
+        self.ProductList.setHorizontalHeaderLabels(['Code', 'Product', 'Manufacturer_ID', 'Price'])
 
 
+        # either labels are wrong or table output is wrong, i opted to change label
         #result = read.product_quantity(c)
         result = read.table(tables.TableEnum.product, c)
         rowCount = 0
@@ -93,8 +96,11 @@ class NewStockMenu(QMainWindow):
         for item in result:
             self.ProductList.setItem(rowCount, 0, QTableWidgetItem(str(item[0])))
             self.ProductList.setItem(rowCount, 1, QTableWidgetItem(item[1]))
-            self.ProductList.setItem(rowCount, 2, QTableWidgetItem("$" + str(item[2])))
-            self.ProductList.setItem(rowCount, 3, QTableWidgetItem(str(item[3])))
+            # either labels are wrong or table output is wrong, i opted to change label
+            #self.ProductList.setItem(rowCount, 2, QTableWidgetItem("$" + str(item[2])))
+            #self.ProductList.setItem(rowCount, 3, QTableWidgetItem(str(item[3])))
+            self.ProductList.setItem(rowCount, 2, QTableWidgetItem(str(item[2])))
+            self.ProductList.setItem(rowCount, 3, QTableWidgetItem("$" + str(item[3])))
             rowCount = rowCount + 1
 
     # Function Requires database, product ID included
