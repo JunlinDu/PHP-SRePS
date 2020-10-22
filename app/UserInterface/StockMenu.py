@@ -84,7 +84,7 @@ class NewStockMenu(QMainWindow):
         ProductList.clear()
         self.ProductList.setHorizontalHeaderLabels(['Code', 'Product', 'Price', 'Quantity'])
 
-        result = read.table(tables.TableEnum.product, c)
+        result = read.product_quantity(c)
         rowCount = 0
         self.ProductList.setRowCount(len(result))
 
