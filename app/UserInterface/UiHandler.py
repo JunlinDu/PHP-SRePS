@@ -10,7 +10,6 @@ from UserInterface import ForecastMenu
 from UserInterface.Resources.images import *
 
 
-
 class MyApp(QMainWindow):
     def __init__(self):
         super(MyApp, self).__init__()
@@ -40,6 +39,7 @@ class MyApp(QMainWindow):
         self.close()
         self.Open = ForecastMenu.NewForecastMenu()
         self.Open.show()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
